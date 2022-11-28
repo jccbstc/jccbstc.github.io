@@ -1,0 +1,998 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="微服务保护雪崩问题及解决方案雪崩问题微服务中，服务间调用关系错综复杂，一个微服务往往依赖于多个其它微服务。 如果服务提供者I发生了故障，当前的应用的部分业务因为依赖于服务I，因此也会被阻塞。此时，其它不依赖于服务I的业务似乎不受影响。 但是，依赖服务I的业务请求被阻塞，用户不会得到响应，则tomcat的这个线程不会释放，于是越来越多的用户请求到来，越来越多的线程会阻塞： 服务器支持的线程和并发数有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微服务保护1">
+<meta property="og:url" content="http://example.com/2022/11/10/%E7%AC%94%E8%AE%B0/%E6%8A%80%E6%9C%AF2/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%BF%9D%E6%8A%A41/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="微服务保护雪崩问题及解决方案雪崩问题微服务中，服务间调用关系错综复杂，一个微服务往往依赖于多个其它微服务。 如果服务提供者I发生了故障，当前的应用的部分业务因为依赖于服务I，因此也会被阻塞。此时，其它不依赖于服务I的业务似乎不受影响。 但是，依赖服务I的业务请求被阻塞，用户不会得到响应，则tomcat的这个线程不会释放，于是越来越多的用户请求到来，越来越多的线程会阻塞： 服务器支持的线程和并发数有">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/assets/image-20210715172710340.png">
+<meta property="og:image" content="http://example.com/assets/image-20210715172820438.png">
+<meta property="og:image" content="http://example.com/assets/image-20210715172946352.png">
+<meta property="og:image" content="http://example.com/assets/image-20210715173215243.png">
+<meta property="og:image" content="http://example.com/assets/image-20210715173327075.png">
+<meta property="og:image" content="http://example.com/assets/image-20210715173428073.png">
+<meta property="og:image" content="http://example.com/assets/image-20210715173555158.png">
+<meta property="og:image" content="http://example.com/assets/image-20210715191757319.png">
+<meta property="og:image" content="http://example.com/assets/image-20210715191757319.png">
+<meta property="og:image" content="http://example.com/assets/image-20210715192010657.png">
+<meta property="og:image" content="http://example.com/assets/image-20210715192455429.png">
+<meta property="og:image" content="http://example.com/assets/image-20210715200635414.png">
+<meta property="og:image" content="http://example.com/assets/image-20210715200804594.png">
+<meta property="og:image" content="http://example.com/assets/image-20210715200853671.png">
+<meta property="og:image" content="http://example.com/assets/image-20210715201827886.png">
+<meta property="og:image" content="http://example.com/assets/image-20210715202540786.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716101805951.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716101934499.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716102103814.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716102416266.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716102532554.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716102636030.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716103143002.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716103536346.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716105227163.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716105408723.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716105612312.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716105812789.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716110027064.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716105855951.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716105956401.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716110225104.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716110629796.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716111012387.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716111136699.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716111303701.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716111404717.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716111526480.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716111658541.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716113147176.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716113426524.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716114048918.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716114243558.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716114429361.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716114522935.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716114651137.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716115014663.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716115131463.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716115232426.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716115717523.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716120033572.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716120208509.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716120319009.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716120536714.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716120754527.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716120840501.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716121105567.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716120900365.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716121201630.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716120919131.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716121220305.png">
+<meta property="article:published_time" content="2022-11-10T05:34:43.193Z">
+<meta property="article:modified_time" content="2022-11-28T06:32:10.907Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="技术框架">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/assets/image-20210715172710340.png">
+  
+  
+  
+  <title>微服务保护1 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="微服务保护1"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-11-10 13:34" pubdate>
+          2022年11月10日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          53 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">微服务保护1</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="微服务保护"><a href="#微服务保护" class="headerlink" title="微服务保护"></a>微服务保护</h1><h1 id="雪崩问题及解决方案"><a href="#雪崩问题及解决方案" class="headerlink" title="雪崩问题及解决方案"></a>雪崩问题及解决方案</h1><h3 id="雪崩问题"><a href="#雪崩问题" class="headerlink" title="雪崩问题"></a>雪崩问题</h3><p>微服务中，服务间调用关系错综复杂，一个微服务往往依赖于多个其它微服务。</p>
+<p>如果服务提供者I发生了故障，当前的应用的部分业务因为依赖于服务I，因此也会被阻塞。此时，其它不依赖于服务I的业务似乎不受影响。</p>
+<p>但是，依赖服务I的业务请求被阻塞，用户不会得到响应，则tomcat的这个线程不会释放，于是越来越多的用户请求到来，越来越多的线程会阻塞：</p>
+<p>服务器支持的线程和并发数有限，请求一直阻塞，会导致服务器资源耗尽，从而导致所有其它服务都不可用，那么当前服务也就不可用了。</p>
+<p>那么，依赖于当前服务的其它服务随着时间的推移，最终也都会变的不可用，形成级联失败，雪崩就发生了：</p>
+<p><img src="/assets/image-20210715172710340.png" srcset="/img/loading.gif" lazyload alt="image-20210715172710340"></p>
+<h3 id="超时处理"><a href="#超时处理" class="headerlink" title="超时处理"></a>超时处理</h3><p>解决雪崩问题的常见方式有四种：</p>
+<p>•超时处理：设定超时时间，请求超过一定时间没有响应就返回错误信息，不会无休止等待</p>
+<p><img src="/assets/image-20210715172820438.png" srcset="/img/loading.gif" lazyload alt="image-20210715172820438"></p>
+<h3 id="仓壁模式"><a href="#仓壁模式" class="headerlink" title="仓壁模式"></a>仓壁模式</h3><p>方案2：仓壁模式</p>
+<p>仓壁模式来源于船舱的设计：</p>
+<p><img src="/assets/image-20210715172946352.png" srcset="/img/loading.gif" lazyload alt="image-20210715172946352"></p>
+<p>船舱都会被隔板分离为多个独立空间，当船体破损时，只会导致部分空间进入，将故障控制在一定范围内，避免整个船体都被淹没。</p>
+<p>于此类似，我们可以限定每个业务能使用的线程数，避免耗尽整个tomcat的资源，因此也叫线程隔离。</p>
+<p><img src="/assets/image-20210715173215243.png" srcset="/img/loading.gif" lazyload alt="image-20210715173215243"></p>
+<h3 id="断路器"><a href="#断路器" class="headerlink" title="断路器"></a>断路器</h3><p>断路器模式：由<strong>断路器</strong>统计业务执行的异常比例，如果超出阈值则会<strong>熔断</strong>该业务，拦截访问该业务的一切请求。</p>
+<p>断路器会统计访问某个服务的请求数量，异常比例：</p>
+<p><img src="/assets/image-20210715173327075.png" srcset="/img/loading.gif" lazyload alt="image-20210715173327075"></p>
+<p>当发现访问服务D的请求异常比例过高时，认为服务D有导致雪崩的风险，会拦截访问服务D的一切请求，形成熔断：</p>
+<p><img src="/assets/image-20210715173428073.png" srcset="/img/loading.gif" lazyload alt="image-20210715173428073"></p>
+<h3 id="限流"><a href="#限流" class="headerlink" title="限流"></a>限流</h3><p><strong>流量控制</strong>：限制业务访问的QPS，避免服务因流量的突增而故障。</p>
+<p><img src="/assets/image-20210715173555158.png" srcset="/img/loading.gif" lazyload alt="image-20210715173555158"></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>什么是雪崩问题？</p>
+<ul>
+<li>微服务之间相互调用，因为调用链中的一个服务故障，引起整个链路都无法访问的情况。</li>
+</ul>
+<p>可以认为：</p>
+<p><strong>限流</strong>是对服务的保护，避免因瞬间高并发流量而导致服务故障，进而避免雪崩。是一种<strong>预防</strong>措施。</p>
+<p><strong>超时处理、线程隔离、降级熔断</strong>是在部分服务故障时，将故障控制在一定范围，避免雪崩。是一种<strong>补救</strong>措施。</p>
+<h1 id="流量控制"><a href="#流量控制" class="headerlink" title="流量控制"></a>流量控制</h1><p>雪崩问题虽然有四种方案，但是限流是避免服务因突发的流量而发生故障，是对微服务雪崩问题的预防。我们先学习这种模式。</p>
+<h2 id="簇点链路"><a href="#簇点链路" class="headerlink" title="簇点链路"></a>簇点链路</h2><p>当请求进入微服务时，首先会访问DispatcherServlet，然后进入Controller、Service、Mapper，这样的一个调用链就叫做<strong>簇点链路</strong>。簇点链路中被监控的每一个接口就是一个<strong>资源</strong>。</p>
+<p>默认情况下sentinel会监控SpringMVC的每一个端点（Endpoint，也就是controller中的方法），因此SpringMVC的每一个端点（Endpoint）就是调用链路中的一个资源。</p>
+<p>例如，我们刚才访问的order-service中的OrderController中的端点：/order/{orderId}</p>
+<p><img src="/assets/image-20210715191757319.png" srcset="/img/loading.gif" lazyload alt="image-20210715191757319"></p>
+<p>流控、熔断等都是针对簇点链路中的资源来设置的，因此我们可以点击对应资源后面的按钮来设置规则：</p>
+<ul>
+<li>流控：流量控制</li>
+<li>降级：降级熔断</li>
+<li>热点：热点参数限流，是限流的一种</li>
+<li>授权：请求的权限控制</li>
+</ul>
+<h2 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h2><h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>点击资源/order/{orderId}后面的流控按钮，就可以弹出表单。</p>
+<p><img src="/assets/image-20210715191757319.png" srcset="/img/loading.gif" lazyload alt="image-20210715191757319"></p>
+<p>表单中可以填写限流规则，如下：</p>
+<p><img src="/assets/image-20210715192010657.png" srcset="/img/loading.gif" lazyload alt="image-20210715192010657"></p>
+<p>其含义是限制 /order/{orderId}这个资源的单机QPS为1，即每秒只允许1次请求，超出的请求会被拦截并报错。</p>
+<h3 id="练习："><a href="#练习：" class="headerlink" title="练习："></a>练习：</h3><p>需求：给 /order/{orderId}这个资源设置流控规则，QPS不能超过 5，然后测试。</p>
+<p>1）首先在sentinel控制台添加限流规则</p>
+<p><img src="/assets/image-20210715192455429.png" srcset="/img/loading.gif" lazyload alt="image-20210715192455429"></p>
+<p>2）利用jmeter测试</p>
+<p>选择：</p>
+<p><img src="/assets/image-20210715200635414.png" srcset="/img/loading.gif" lazyload alt="image-20210715200635414"></p>
+<p>20个用户，2秒内运行完，QPS是10，超过了5.</p>
+<p>选中<code>流控入门，QPS&lt;5</code>右键运行：</p>
+<p><img src="/assets/image-20210715200804594.png" srcset="/img/loading.gif" lazyload alt="image-20210715200804594"></p>
+<blockquote>
+<p>注意，不要点击菜单中的执行按钮来运行。</p>
+</blockquote>
+<p>结果：</p>
+<p><img src="/assets/image-20210715200853671.png" srcset="/img/loading.gif" lazyload alt="image-20210715200853671"></p>
+<p>可以看到，成功的请求每次只有5个</p>
+<h2 id="流控模式"><a href="#流控模式" class="headerlink" title="流控模式"></a>流控模式</h2><p>在添加限流规则时，点击高级选项，可以选择三种<strong>流控模式</strong>：</p>
+<ul>
+<li>直接：统计当前资源的请求，触发阈值时对当前资源直接限流，也是默认的模式</li>
+<li>关联：统计与当前资源相关的另一个资源，触发阈值时，对当前资源限流</li>
+<li>链路：统计从指定链路访问到本资源的请求，触发阈值时，对指定链路限流</li>
+</ul>
+<p><img src="/assets/image-20210715201827886.png" srcset="/img/loading.gif" lazyload alt="image-20210715201827886"></p>
+<p>快速入门测试的就是直接模式。</p>
+<h3 id="关联模式"><a href="#关联模式" class="headerlink" title="关联模式"></a>关联模式</h3><p><strong>关联模式</strong>：统计与当前资源相关的另一个资源，触发阈值时，对当前资源限流</p>
+<p><strong>配置规则</strong>：</p>
+<p><img src="/assets/image-20210715202540786.png" srcset="/img/loading.gif" lazyload alt="image-20210715202540786"></p>
+<p><strong>语法说明</strong>：当/write资源访问量触发阈值时，就会对/read资源限流，避免影响/write资源。</p>
+<p><strong>使用场景</strong>：比如用户支付时需要修改订单状态，同时用户要查询订单。查询和修改操作会争抢数据库锁，产生竞争。业务需求是优先支付和更新订单的业务，因此当修改订单业务触发阈值时，需要对查询订单业务限流。</p>
+<p><strong>需求说明</strong>：</p>
+<ul>
+<li><p>在OrderController新建两个端点：/order/query和/order/update，无需实现业务</p>
+</li>
+<li><p>配置流控规则，当/order/ update资源被访问的QPS超过5时，对/order/query请求限流</p>
+</li>
+</ul>
+<p>1）定义/order/query端点，模拟订单查询</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping("/query")</span><br><span class="hljs-keyword">public</span> String <span class="hljs-title function_">queryOrder</span><span class="hljs-params">()</span> {<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">"查询订单成功"</span>;<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>2）定义/order/update端点，模拟订单更新</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping("/update")</span><br><span class="hljs-keyword">public</span> String <span class="hljs-title function_">updateOrder</span><span class="hljs-params">()</span> {<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">"更新订单成功"</span>;<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>重启服务，查看sentinel控制台的簇点链路：</p>
+<p><img src="/assets/image-20210716101805951.png" srcset="/img/loading.gif" lazyload alt="image-20210716101805951"></p>
+<p>3）配置流控规则</p>
+<p>对哪个端点限流，就点击哪个端点后面的按钮。我们是对订单查询/order/query限流，因此点击它后面的按钮：</p>
+<p><img src="/assets/image-20210716101934499.png" srcset="/img/loading.gif" lazyload alt="image-20210716101934499"></p>
+<p>在表单中填写流控规则：</p>
+<p><img src="/assets/image-20210716102103814.png" srcset="/img/loading.gif" lazyload alt="image-20210716102103814"></p>
+<p>4）在Jmeter测试</p>
+<p>选择《流控模式-关联》：</p>
+<p><img src="/assets/image-20210716102416266.png" srcset="/img/loading.gif" lazyload alt="image-20210716102416266"></p>
+<p>可以看到1000个用户，100秒，因此QPS为10，超过了我们设定的阈值：5</p>
+<p>查看http请求：</p>
+<p><img src="/assets/image-20210716102532554.png" srcset="/img/loading.gif" lazyload alt="image-20210716102532554"></p>
+<p>请求的目标是/order/update，这样这个断点就会触发阈值。</p>
+<p>但限流的目标是/order/query，我们在浏览器访问，可以发现：</p>
+<p><img src="/assets/image-20210716102636030.png" srcset="/img/loading.gif" lazyload alt="image-20210716102636030"></p>
+<p>确实被限流了。</p>
+<p>5）总结</p>
+<p><img src="/assets/image-20210716103143002.png" srcset="/img/loading.gif" lazyload alt="image-20210716103143002"></p>
+<h3 id="链路模式"><a href="#链路模式" class="headerlink" title="链路模式"></a>链路模式</h3><p><strong>链路模式</strong>：只针对从指定链路访问到本资源的请求做统计，判断是否超过阈值。</p>
+<p><strong>配置示例</strong>：</p>
+<p>例如有两条请求链路：</p>
+<ul>
+<li><p>/test1 –&gt; /common</p>
+</li>
+<li><p>/test2 –&gt; /common</p>
+</li>
+</ul>
+<p>如果只希望统计从/test2进入到/common的请求，则可以这样配置：</p>
+<p><img src="/assets/image-20210716103536346.png" srcset="/img/loading.gif" lazyload alt="image-20210716103536346"></p>
+<p><strong>实战案例</strong></p>
+<p>需求：有查询订单和创建订单业务，两者都需要查询商品。针对从查询订单进入到查询商品的请求统计，并设置限流。</p>
+<p>步骤：</p>
+<ol>
+<li><p>在OrderService中添加一个queryGoods方法，不用实现业务</p>
+</li>
+<li><p>在OrderController中，改造/order/query端点，调用OrderService中的queryGoods方法</p>
+</li>
+<li><p>在OrderController中添加一个/order/save的端点，调用OrderService的queryGoods方法</p>
+</li>
+<li><p>给queryGoods设置限流规则，从/order/query进入queryGoods的方法限制QPS必须小于2</p>
+</li>
+</ol>
+<p>实现：</p>
+<h6 id="1）添加查询商品方法"><a href="#1）添加查询商品方法" class="headerlink" title="1）添加查询商品方法"></a>1）添加查询商品方法</h6><p>在order-service服务中，给OrderService类添加一个queryGoods方法：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">queryGoods</span><span class="hljs-params">()</span>{<br>    System.err.println(<span class="hljs-string">"查询商品"</span>);<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<h6 id="2）查询订单时，查询商品"><a href="#2）查询订单时，查询商品" class="headerlink" title="2）查询订单时，查询商品"></a>2）查询订单时，查询商品</h6><p>在order-service的OrderController中，修改/order/query端点的业务逻辑：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping("/query")</span><br><span class="hljs-keyword">public</span> String <span class="hljs-title function_">queryOrder</span><span class="hljs-params">()</span> {<br>    <span class="hljs-comment">// 查询商品</span><br>    orderService.queryGoods();<br>    <span class="hljs-comment">// 查询订单</span><br>    System.out.println(<span class="hljs-string">"查询订单"</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">"查询订单成功"</span>;<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<h6 id="3）新增订单，查询商品"><a href="#3）新增订单，查询商品" class="headerlink" title="3）新增订单，查询商品"></a>3）新增订单，查询商品</h6><p>在order-service的OrderController中，修改/order/save端点，模拟新增订单：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping("/save")</span><br><span class="hljs-keyword">public</span> String <span class="hljs-title function_">saveOrder</span><span class="hljs-params">()</span> {<br>    <span class="hljs-comment">// 查询商品</span><br>    orderService.queryGoods();<br>    <span class="hljs-comment">// 查询订单</span><br>    System.err.println(<span class="hljs-string">"新增订单"</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">"新增订单成功"</span>;<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<h6 id="4）给查询商品添加资源标记"><a href="#4）给查询商品添加资源标记" class="headerlink" title="4）给查询商品添加资源标记"></a>4）给查询商品添加资源标记</h6><p>默认情况下，OrderService中的方法是不被Sentinel监控的，需要我们自己通过注解来标记要监控的方法。</p>
+<p>给OrderService的queryGoods方法添加@SentinelResource注解：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@SentinelResource("goods")</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">queryGoods</span><span class="hljs-params">()</span>{<br>    System.err.println(<span class="hljs-string">"查询商品"</span>);<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<p>链路模式中，是对不同来源的两个链路做监控。但是sentinel默认会给进入SpringMVC的所有请求设置同一个root资源，会导致链路模式失效。</p>
+<p>我们需要关闭这种对SpringMVC的资源聚合，修改order-service服务的application.yml文件：</p>
+<figure class="highlight yaml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">cloud:</span><br>    <span class="hljs-attr">sentinel:</span><br>      <span class="hljs-attr">web-context-unify:</span> <span class="hljs-literal">false</span> <span class="hljs-comment"># 关闭context整合</span><br></code></pre></td></tr></tbody></table></figure>
+
+<p>重启服务，访问/order/query和/order/save，可以查看到sentinel的簇点链路规则中，出现了新的资源：</p>
+<p><img src="/assets/image-20210716105227163.png" srcset="/img/loading.gif" lazyload alt="image-20210716105227163"></p>
+<h6 id="5）添加流控规则"><a href="#5）添加流控规则" class="headerlink" title="5）添加流控规则"></a>5）添加流控规则</h6><p>点击goods资源后面的流控按钮，在弹出的表单中填写下面信息：</p>
+<p><img src="/assets/image-20210716105408723.png" srcset="/img/loading.gif" lazyload alt="image-20210716105408723"></p>
+<p>只统计从/order/query进入/goods的资源，QPS阈值为2，超出则被限流。</p>
+<h6 id="6）Jmeter测试"><a href="#6）Jmeter测试" class="headerlink" title="6）Jmeter测试"></a>6）Jmeter测试</h6><p>选择《流控模式-链路》：</p>
+<p><img src="/assets/image-20210716105612312.png" srcset="/img/loading.gif" lazyload alt="image-20210716105612312"></p>
+<p>可以看到这里200个用户，50秒内发完，QPS为4，超过了我们设定的阈值2</p>
+<p>一个http请求是访问/order/save：</p>
+<p><img src="/assets/image-20210716105812789.png" srcset="/img/loading.gif" lazyload alt="image-20210716105812789"></p>
+<p>运行的结果：</p>
+<p><img src="/assets/image-20210716110027064.png" srcset="/img/loading.gif" lazyload alt="image-20210716110027064"></p>
+<p>完全不受影响。</p>
+<p>另一个是访问/order/query：</p>
+<p><img src="/assets/image-20210716105855951.png" srcset="/img/loading.gif" lazyload alt="image-20210716105855951"></p>
+<p>运行结果：</p>
+<p><img src="/assets/image-20210716105956401.png" srcset="/img/loading.gif" lazyload alt="image-20210716105956401"></p>
+<p>每次只有2个通过。</p>
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>流控模式有哪些？</p>
+<p>•直接：对当前资源限流</p>
+<p>•关联：高优先级资源触发阈值，对低优先级资源限流。</p>
+<p>•链路：阈值统计时，只统计从指定资源进入当前资源的请求，是对请求来源的限流</p>
+<h2 id="流控效果"><a href="#流控效果" class="headerlink" title="流控效果"></a>流控效果</h2><p>在流控的高级选项中，还有一个流控效果选项：</p>
+<p><img src="/assets/image-20210716110225104.png" srcset="/img/loading.gif" lazyload alt="image-20210716110225104"></p>
+<p>流控效果是指请求达到流控阈值时应该采取的措施，包括三种：</p>
+<ul>
+<li><p>快速失败：达到阈值后，新的请求会被立即拒绝并抛出FlowException异常。是默认的处理方式。</p>
+</li>
+<li><p>warm up：预热模式，对超出阈值的请求同样是拒绝并抛出异常。但这种模式阈值会动态变化，从一个较小值逐渐增加到最大阈值。</p>
+</li>
+<li><p>排队等待：让所有的请求按照先后次序排队执行，两个请求的间隔不能小于指定时长</p>
+</li>
+</ul>
+<h3 id="warm-up"><a href="#warm-up" class="headerlink" title="warm up"></a>warm up</h3><p>阈值一般是一个微服务能承担的最大QPS，但是一个服务刚刚启动时，一切资源尚未初始化（<strong>冷启动</strong>），如果直接将QPS跑到最大值，可能导致服务瞬间宕机。</p>
+<p>warm up也叫<strong>预热模式</strong>，是应对服务冷启动的一种方案。请求阈值初始值是 maxThreshold / coldFactor，持续指定时长后，逐渐提高到maxThreshold值。而coldFactor的默认值是3.</p>
+<p>例如，我设置QPS的maxThreshold为10，预热时间为5秒，那么初始阈值就是 10 / 3 ，也就是3，然后在5秒后逐渐增长到10.</p>
+<p><img src="/assets/image-20210716110629796.png" srcset="/img/loading.gif" lazyload alt="image-20210716110629796"></p>
+<p><strong>案例</strong></p>
+<p>需求：给/order/{orderId}这个资源设置限流，最大QPS为10，利用warm up效果，预热时长为5秒</p>
+<h6 id="1）配置流控规则："><a href="#1）配置流控规则：" class="headerlink" title="1）配置流控规则："></a>1）配置流控规则：</h6><p><img src="/assets/image-20210716111012387.png" srcset="/img/loading.gif" lazyload alt="image-20210716111012387"></p>
+<h6 id="2）Jmeter测试"><a href="#2）Jmeter测试" class="headerlink" title="2）Jmeter测试"></a>2）Jmeter测试</h6><p>选择《流控效果，warm up》：</p>
+<p><img src="/assets/image-20210716111136699.png" srcset="/img/loading.gif" lazyload alt="image-20210716111136699"></p>
+<p>QPS为10.</p>
+<p>刚刚启动时，大部分请求失败，成功的只有3个，说明QPS被限定在3：</p>
+<p><img src="/assets/image-20210716111303701.png" srcset="/img/loading.gif" lazyload alt="image-20210716111303701"></p>
+<p>随着时间推移，成功比例越来越高：</p>
+<p><img src="/assets/image-20210716111404717.png" srcset="/img/loading.gif" lazyload alt="image-20210716111404717"></p>
+<p>到Sentinel控制台查看实时监控：</p>
+<p><img src="/assets/image-20210716111526480.png" srcset="/img/loading.gif" lazyload alt="image-20210716111526480"></p>
+<p>一段时间后：</p>
+<p><img src="/assets/image-20210716111658541.png" srcset="/img/loading.gif" lazyload alt="image-20210716111658541"></p>
+<h3 id="排队等待"><a href="#排队等待" class="headerlink" title="排队等待"></a>排队等待</h3><p>当请求超过QPS阈值时，快速失败和warm up 会拒绝新的请求并抛出异常。</p>
+<p>而排队等待则是让所有请求进入一个队列中，然后按照阈值允许的时间间隔依次执行。后来的请求必须等待前面执行完成，如果请求预期的等待时间超出最大时长，则会被拒绝。</p>
+<p>工作原理</p>
+<p>例如：QPS = 5，意味着每200ms处理一个队列中的请求；timeout = 2000，意味着<strong>预期等待时长</strong>超过2000ms的请求会被拒绝并抛出异常。</p>
+<p>那什么叫做预期等待时长呢？</p>
+<p>比如现在一下子来了12 个请求，因为每200ms执行一个请求，那么：</p>
+<ul>
+<li>第6个请求的<strong>预期等待时长</strong> =  200 * （6 - 1） = 1000ms</li>
+<li>第12个请求的预期等待时长 = 200 * （12-1） = 2200ms</li>
+</ul>
+<p>现在，第1秒同时接收到10个请求，但第2秒只有1个请求，此时QPS的曲线这样的：</p>
+<p><img src="/assets/image-20210716113147176.png" srcset="/img/loading.gif" lazyload alt="image-20210716113147176"></p>
+<p>如果使用队列模式做流控，所有进入的请求都要排队，以固定的200ms的间隔执行，QPS会变的很平滑：</p>
+<p><img src="/assets/image-20210716113426524.png" srcset="/img/loading.gif" lazyload alt="image-20210716113426524"></p>
+<p>平滑的QPS曲线，对于服务器来说是更友好的。</p>
+<p><strong>案例</strong></p>
+<p>需求：给/order/{orderId}这个资源设置限流，最大QPS为10，利用排队的流控效果，超时时长设置为5s</p>
+<h6 id="1）添加流控规则"><a href="#1）添加流控规则" class="headerlink" title="1）添加流控规则"></a>1）添加流控规则</h6><p><img src="/assets/image-20210716114048918.png" srcset="/img/loading.gif" lazyload alt="image-20210716114048918"></p>
+<h6 id="2）Jmeter测试-1"><a href="#2）Jmeter测试-1" class="headerlink" title="2）Jmeter测试"></a>2）Jmeter测试</h6><p>选择《流控效果，队列》：</p>
+<p><img src="/assets/image-20210716114243558.png" srcset="/img/loading.gif" lazyload alt="image-20210716114243558"></p>
+<p>QPS为15，已经超过了我们设定的10。</p>
+<p>如果是之前的 快速失败、warmup模式，超出的请求应该会直接报错。</p>
+<p>但是我们看看队列模式的运行结果：</p>
+<p><img src="/assets/image-20210716114429361.png" srcset="/img/loading.gif" lazyload alt="image-20210716114429361"></p>
+<p>全部都通过了。</p>
+<p>再去sentinel查看实时监控的QPS曲线：</p>
+<p><img src="/assets/image-20210716114522935.png" srcset="/img/loading.gif" lazyload alt="image-20210716114522935"></p>
+<p>QPS非常平滑，一致保持在10，但是超出的请求没有被拒绝，而是放入队列。因此<strong>响应时间</strong>（等待时间）会越来越长。</p>
+<p>当队列满了以后，才会有部分请求失败：</p>
+<p><img src="/assets/image-20210716114651137.png" srcset="/img/loading.gif" lazyload alt="image-20210716114651137"></p>
+<h3 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a>总结</h3><p>流控效果有哪些？</p>
+<ul>
+<li><p>快速失败：QPS超过阈值时，拒绝新的请求</p>
+</li>
+<li><p>warm up： QPS超过阈值时，拒绝新的请求；QPS阈值是逐渐提升的，可以避免冷启动时高并发导致服务宕机。</p>
+</li>
+<li><p>排队等待：请求会进入队列，按照阈值允许的时间间隔依次执行请求；如果请求预期等待时长大于超时时间，直接拒绝</p>
+</li>
+</ul>
+<h3 id="热点参数限流"><a href="#热点参数限流" class="headerlink" title="热点参数限流"></a>热点参数限流</h3><p>之前的限流是统计访问某个资源的所有请求，判断是否超过QPS阈值。而热点参数限流是<strong>分别统计参数值相同的请求</strong>，判断是否超过QPS阈值。</p>
+<h6 id="全局参数限流"><a href="#全局参数限流" class="headerlink" title="全局参数限流"></a>全局参数限流</h6><p>例如，一个根据id查询商品的接口：</p>
+<p><img src="/assets/image-20210716115014663.png" srcset="/img/loading.gif" lazyload alt="image-20210716115014663"></p>
+<p>访问/goods/{id}的请求中，id参数值会有变化，热点参数限流会根据参数值分别统计QPS，统计结果：</p>
+<p><img src="/assets/image-20210716115131463.png" srcset="/img/loading.gif" lazyload alt="image-20210716115131463"></p>
+<p>当id=1的请求触发阈值被限流时，id值不为1的请求不受影响。</p>
+<p>配置示例：</p>
+<p><img src="/assets/image-20210716115232426.png" srcset="/img/loading.gif" lazyload alt="image-20210716115232426"></p>
+<p>代表的含义是：对hot这个资源的0号参数（第一个参数）做统计，每1秒<strong>相同参数值</strong>的请求数不能超过5</p>
+<h6 id="热点参数限流-1"><a href="#热点参数限流-1" class="headerlink" title="热点参数限流"></a>热点参数限流</h6><p>刚才的配置中，对查询商品这个接口的所有商品一视同仁，QPS都限定为5.</p>
+<p>而在实际开发中，可能部分商品是热点商品，例如秒杀商品，我们希望这部分商品的QPS限制与其它商品不一样，高一些。那就需要配置热点参数限流的高级选项了：</p>
+<p><img src="/assets/image-20210716115717523.png" srcset="/img/loading.gif" lazyload alt="image-20210716115717523"></p>
+<p>结合上一个配置，这里的含义是对0号的long类型参数限流，每1秒相同参数的QPS不能超过5，有两个例外：</p>
+<p>•如果参数值是100，则每1秒允许的QPS为10</p>
+<p>•如果参数值是101，则每1秒允许的QPS为15</p>
+<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><p><strong>案例需求</strong>：给/order/{orderId}这个资源添加热点参数限流，规则如下：</p>
+<p>•默认的热点参数规则是每1秒请求量不超过2</p>
+<p>•给102这个参数设置例外：每1秒请求量不超过4</p>
+<p>•给103这个参数设置例外：每1秒请求量不超过10</p>
+<p><strong>注意事项</strong>：热点参数限流对默认的SpringMVC资源无效，需要利用@SentinelResource注解标记资源</p>
+<h6 id="1）标记资源"><a href="#1）标记资源" class="headerlink" title="1）标记资源"></a>1）标记资源</h6><p>给order-service中的OrderController中的/order/{orderId}资源添加注解：</p>
+<p><img src="/assets/image-20210716120033572.png" srcset="/img/loading.gif" lazyload alt="image-20210716120033572"></p>
+<h6 id="2）热点参数限流规则"><a href="#2）热点参数限流规则" class="headerlink" title="2）热点参数限流规则"></a>2）热点参数限流规则</h6><p>访问该接口，可以看到我们标记的hot资源出现了：</p>
+<p><img src="/assets/image-20210716120208509.png" srcset="/img/loading.gif" lazyload alt="image-20210716120208509"></p>
+<p>这里不要点击hot后面的按钮，页面有BUG</p>
+<p>点击左侧菜单中<strong>热点规则</strong>菜单：</p>
+<p><img src="/assets/image-20210716120319009.png" srcset="/img/loading.gif" lazyload alt="image-20210716120319009"></p>
+<p>点击新增，填写表单：</p>
+<p><img src="/assets/image-20210716120536714.png" srcset="/img/loading.gif" lazyload alt="image-20210716120536714"></p>
+<h6 id="3）Jmeter测试"><a href="#3）Jmeter测试" class="headerlink" title="3）Jmeter测试"></a>3）Jmeter测试</h6><p>选择《热点参数限流 QPS1》：</p>
+<p><img src="/assets/image-20210716120754527.png" srcset="/img/loading.gif" lazyload alt="image-20210716120754527"></p>
+<p>这里发起请求的QPS为5.</p>
+<p>包含3个http请求：</p>
+<p>普通参数，QPS阈值为2</p>
+<p><img src="/assets/image-20210716120840501.png" srcset="/img/loading.gif" lazyload alt="image-20210716120840501"></p>
+<p>运行结果：</p>
+<p><img src="/assets/image-20210716121105567.png" srcset="/img/loading.gif" lazyload alt="image-20210716121105567"></p>
+<p>例外项，QPS阈值为4</p>
+<p><img src="/assets/image-20210716120900365.png" srcset="/img/loading.gif" lazyload alt="image-20210716120900365"></p>
+<p>运行结果：</p>
+<p><img src="/assets/image-20210716121201630.png" srcset="/img/loading.gif" lazyload alt="image-20210716121201630"></p>
+<p>例外项，QPS阈值为10</p>
+<p><img src="/assets/image-20210716120919131.png" srcset="/img/loading.gif" lazyload alt="image-20210716120919131"></p>
+<p>运行结果：</p>
+<p><img src="/assets/image-20210716121220305.png" srcset="/img/loading.gif" lazyload alt="image-20210716121220305"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%A1%86%E6%9E%B6/" class="category-chain-item">技术框架</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%8A%80%E6%9C%AF%E6%A1%86%E6%9E%B6/">#技术框架</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>微服务保护1</div>
+      <div>http://example.com/2022/11/10/笔记/技术2/微服务保护1/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年11月10日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/11/10/%E7%AC%94%E8%AE%B0/%E6%8A%80%E6%9C%AF2/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%BF%9D%E6%8A%A42/" title="微服务保护2">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">微服务保护2</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/11/08/%E7%AC%94%E8%AE%B0/%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/sentinel/" title="Sentinel介绍和安装">
+                        <span class="hidden-mobile">Sentinel介绍和安装</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

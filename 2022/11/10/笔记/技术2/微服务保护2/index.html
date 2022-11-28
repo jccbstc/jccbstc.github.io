@@ -1,0 +1,942 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="微服务保护隔离和降级限流是一种预防措施，虽然限流可以尽量避免因高并发而引起的服务故障，但服务还会因为其它原因而故障。 而要将这些故障控制在一定范围，避免雪崩，就要靠线程隔离（舱壁模式）和熔断降级手段了。 线程隔离之前讲到过：调用者在调用服务提供者时，给每个调用的请求分配独立线程池，出现故障时，最多消耗这个线程池内资源，避免把调用者的所有资源耗尽。  熔断降级：是在调用方这边加入断路器，统计对服务提">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微服务保护2">
+<meta property="og:url" content="http://example.com/2022/11/10/%E7%AC%94%E8%AE%B0/%E6%8A%80%E6%9C%AF2/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%BF%9D%E6%8A%A42/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="微服务保护隔离和降级限流是一种预防措施，虽然限流可以尽量避免因高并发而引起的服务故障，但服务还会因为其它原因而故障。 而要将这些故障控制在一定范围，避免雪崩，就要靠线程隔离（舱壁模式）和熔断降级手段了。 线程隔离之前讲到过：调用者在调用服务提供者时，给每个调用的请求分配独立线程池，出现故障时，最多消耗这个线程池内资源，避免把调用者的所有资源耗尽。  熔断降级：是在调用方这边加入断路器，统计对服务提">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/assets/image-20210715173215243.png">
+<meta property="og:image" content="http://example.com/assets/image-20210715173428073.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716122403502.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716123705780.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716123036937.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716123240518.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716123411217.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716123831992.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716123936844.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716124229894.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716124147820.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716130958518.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716145934347.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716150234787.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716150510956.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716150605208.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716150654094.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716150740434.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716150911004.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716151107785.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716131430682.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716131522912.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716151348183.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716150654094.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716151538785.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716151722916.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716151844817.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716152010750.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716152349191.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716153250134.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716153301069.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716153348396.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716153434095.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716153938887.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716154012736.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716154155238.png">
+<meta property="og:image" content="http://example.com/assets/image-20210716154215456.png">
+<meta property="article:published_time" content="2022-11-10T05:47:56.026Z">
+<meta property="article:modified_time" content="2022-11-28T06:32:10.908Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="技术框架">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/assets/image-20210715173215243.png">
+  
+  
+  
+  <title>微服务保护2 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="微服务保护2"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-11-10 13:47" pubdate>
+          2022年11月10日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          67 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">微服务保护2</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="微服务保护"><a href="#微服务保护" class="headerlink" title="微服务保护"></a>微服务保护</h1><h1 id="隔离和降级"><a href="#隔离和降级" class="headerlink" title="隔离和降级"></a>隔离和降级</h1><p>限流是一种预防措施，虽然限流可以尽量避免因高并发而引起的服务故障，但服务还会因为其它原因而故障。</p>
+<p>而要将这些故障控制在一定范围，避免雪崩，就要靠<strong>线程隔离</strong>（舱壁模式）和<strong>熔断降级</strong>手段了。</p>
+<p><strong>线程隔离</strong>之前讲到过：调用者在调用服务提供者时，给每个调用的请求分配独立线程池，出现故障时，最多消耗这个线程池内资源，避免把调用者的所有资源耗尽。</p>
+<p><img src="/assets/image-20210715173215243.png" srcset="/img/loading.gif" lazyload alt="image-20210715173215243"></p>
+<p><strong>熔断降级</strong>：是在调用方这边加入断路器，统计对服务提供者的调用，如果调用的失败比例过高，则熔断该业务，不允许访问该服务的提供者了。</p>
+<p><img src="/assets/image-20210715173428073.png" srcset="/img/loading.gif" lazyload alt="image-20210715173428073"></p>
+<p>可以看到，不管是线程隔离还是熔断降级，都是对<strong>客户端</strong>（调用方）的保护。需要在<strong>调用方</strong> 发起远程调用时做线程隔离、或者服务熔断。</p>
+<p>而我们的微服务远程调用都是基于Feign来完成的，因此我们需要将Feign与Sentinel整合，在Feign里面实现线程隔离和服务熔断。</p>
+<h2 id="FeignClient整合Sentinel"><a href="#FeignClient整合Sentinel" class="headerlink" title="FeignClient整合Sentinel"></a>FeignClient整合Sentinel</h2><p>SpringCloud中，微服务调用都是通过Feign来实现的，因此做客户端保护必须整合Feign和Sentinel。</p>
+<h5 id="修改配置，开启sentinel功能"><a href="#修改配置，开启sentinel功能" class="headerlink" title="修改配置，开启sentinel功能"></a>修改配置，开启sentinel功能</h5><p>修改OrderService的application.yml文件，开启Feign的Sentinel功能：</p>
+<figure class="highlight yaml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">feign:</span><br>  <span class="hljs-attr">sentinel:</span><br>    <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span> <span class="hljs-comment"># 开启feign对sentinel的支持</span><br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<h5 id="编写失败降级逻辑"><a href="#编写失败降级逻辑" class="headerlink" title="编写失败降级逻辑"></a>编写失败降级逻辑</h5><p>业务失败后，不能直接报错，而应该返回用户一个友好提示或者默认结果，这个就是失败降级逻辑。</p>
+<p>给FeignClient编写失败后的降级逻辑</p>
+<p>①方式一：FallbackClass，无法对远程调用的异常做处理</p>
+<p>②方式二：FallbackFactory，可以对远程调用的异常做处理，我们选择这种</p>
+<p>这里我们演示方式二的失败降级处理。</p>
+<p><strong>步骤一</strong>：在feing-api项目中定义类，实现FallbackFactory：</p>
+<p><img src="/assets/image-20210716122403502.png" srcset="/img/loading.gif" lazyload alt="image-20210716122403502"></p>
+<p>代码：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> cn.itcast.feign.clients.fallback;<br><br><span class="hljs-keyword">import</span> cn.itcast.feign.clients.UserClient;<br><span class="hljs-keyword">import</span> cn.itcast.feign.pojo.User;<br><span class="hljs-keyword">import</span> feign.hystrix.FallbackFactory;<br><span class="hljs-keyword">import</span> lombok.extern.slf4j.Slf4j;<br><br><span class="hljs-meta">@Slf4j</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserClientFallbackFactory</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">FallbackFactory</span>&lt;UserClient&gt; {<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> UserClient <span class="hljs-title function_">create</span><span class="hljs-params">(Throwable throwable)</span> {<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UserClient</span>() {<br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-keyword">public</span> User <span class="hljs-title function_">findById</span><span class="hljs-params">(Long id)</span> {<br>                log.error(<span class="hljs-string">"查询用户异常"</span>, throwable);<br>                <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">User</span>();<br>            }<br>        };<br>    }<br>}<br><br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<p><strong>步骤二</strong>：在feing-api项目中的DefaultFeignConfiguration类中将UserClientFallbackFactory注册为一个Bean：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Bean</span><br><span class="hljs-keyword">public</span> UserClientFallbackFactory <span class="hljs-title function_">userClientFallbackFactory</span><span class="hljs-params">()</span>{<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UserClientFallbackFactory</span>();<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p><strong>步骤三</strong>：在feing-api项目中的UserClient接口中使用UserClientFallbackFactory：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> cn.itcast.feign.clients.fallback.UserClientFallbackFactory;<br><span class="hljs-keyword">import</span> cn.itcast.feign.pojo.User;<br><span class="hljs-keyword">import</span> org.springframework.cloud.openfeign.FeignClient;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.GetMapping;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.PathVariable;<br><br><span class="hljs-meta">@FeignClient(value = "userservice", fallbackFactory = UserClientFallbackFactory.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserClient</span> {<br><br>    <span class="hljs-meta">@GetMapping("/user/{id}")</span><br>    User <span class="hljs-title function_">findById</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable("id")</span> Long id)</span>;<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<p>重启后，访问一次订单查询业务，然后查看sentinel控制台，可以看到新的簇点链路：</p>
+<p><img src="/assets/image-20210716123705780.png" srcset="/img/loading.gif" lazyload alt="image-20210716123705780"></p>
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><p>Sentinel支持的雪崩解决方案：</p>
+<ul>
+<li>线程隔离（仓壁模式）</li>
+<li>降级熔断</li>
+</ul>
+<p>Feign整合Sentinel的步骤：</p>
+<ul>
+<li>在application.yml中配置：feign.sentienl.enable=true</li>
+<li>给FeignClient编写FallbackFactory并注册为Bean</li>
+<li>将FallbackFactory配置到FeignClient</li>
+</ul>
+<h2 id="线程隔离（舱壁模式）"><a href="#线程隔离（舱壁模式）" class="headerlink" title="线程隔离（舱壁模式）"></a>线程隔离（舱壁模式）</h2><h5 id="线程隔离的实现方式"><a href="#线程隔离的实现方式" class="headerlink" title="线程隔离的实现方式"></a>线程隔离的实现方式</h5><p>线程隔离有两种方式实现：</p>
+<ul>
+<li><p>线程池隔离</p>
+</li>
+<li><p>信号量隔离（Sentinel默认采用）</p>
+</li>
+</ul>
+<p>如图：</p>
+<p><img src="/assets/image-20210716123036937.png" srcset="/img/loading.gif" lazyload alt="image-20210716123036937"></p>
+<p><strong>线程池隔离</strong>：给每个服务调用业务分配一个线程池，利用线程池本身实现隔离效果</p>
+<p><strong>信号量隔离</strong>：不创建线程池，而是计数器模式，记录业务使用的线程数量，达到信号量上限时，禁止新的请求。</p>
+<p>两者的优缺点：</p>
+<p><img src="/assets/image-20210716123240518.png" srcset="/img/loading.gif" lazyload alt="image-20210716123240518"></p>
+<h5 id="sentinel的线程隔离"><a href="#sentinel的线程隔离" class="headerlink" title="sentinel的线程隔离"></a>sentinel的线程隔离</h5><p><strong>用法说明</strong>：</p>
+<p>在添加限流规则时，可以选择两种阈值类型：</p>
+<p><img src="/assets/image-20210716123411217.png" srcset="/img/loading.gif" lazyload alt="image-20210716123411217"></p>
+<ul>
+<li><p>QPS：就是每秒的请求数，在快速入门中已经演示过</p>
+</li>
+<li><p>线程数：是该资源能使用用的tomcat线程数的最大值。也就是通过限制线程数量，实现<strong>线程隔离</strong>（舱壁模式）。</p>
+</li>
+</ul>
+<p><strong>案例需求</strong>：给 order-service服务中的UserClient的查询用户接口设置流控规则，线程数不能超过 2。然后利用jemeter测试。</p>
+<h6 id="1）配置隔离规则"><a href="#1）配置隔离规则" class="headerlink" title="1）配置隔离规则"></a>1）配置隔离规则</h6><p>选择feign接口后面的流控按钮：</p>
+<p><img src="/assets/image-20210716123831992.png" srcset="/img/loading.gif" lazyload alt="image-20210716123831992"></p>
+<p>填写表单：</p>
+<p><img src="/assets/image-20210716123936844.png" srcset="/img/loading.gif" lazyload alt="image-20210716123936844"></p>
+<h6 id="2）Jmeter测试"><a href="#2）Jmeter测试" class="headerlink" title="2）Jmeter测试"></a>2）Jmeter测试</h6><p>选择《阈值类型-线程数&lt;2》：</p>
+<p><img src="/assets/image-20210716124229894.png" srcset="/img/loading.gif" lazyload alt="image-20210716124229894"></p>
+<p>一次发生10个请求，有较大概率并发线程数超过2，而超出的请求会走之前定义的失败降级逻辑。</p>
+<p>查看运行结果：</p>
+<p><img src="/assets/image-20210716124147820.png" srcset="/img/loading.gif" lazyload alt="image-20210716124147820"></p>
+<p>发现虽然结果都是通过了，不过部分请求得到的响应是降级返回的null信息。</p>
+<h5 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h5><p>线程隔离的两种手段是？</p>
+<ul>
+<li><p>信号量隔离</p>
+</li>
+<li><p>线程池隔离</p>
+</li>
+</ul>
+<p>信号量隔离的特点是？</p>
+<ul>
+<li>基于计数器模式，简单，开销小</li>
+</ul>
+<p>线程池隔离的特点是？</p>
+<ul>
+<li>基于线程池模式，有额外开销，但隔离控制更强</li>
+</ul>
+<h2 id="熔断降级"><a href="#熔断降级" class="headerlink" title="熔断降级"></a>熔断降级</h2><p>熔断降级是解决雪崩问题的重要手段。其思路是由<strong>断路器</strong>统计服务调用的异常比例、慢请求比例，如果超出阈值则会<strong>熔断</strong>该服务。即拦截访问该服务的一切请求；而当服务恢复时，断路器会放行访问该服务的请求。</p>
+<p>断路器控制熔断和放行是通过状态机来完成的：</p>
+<p><img src="/assets/image-20210716130958518.png" srcset="/img/loading.gif" lazyload alt="image-20210716130958518"></p>
+<p>状态机包括三个状态：</p>
+<ul>
+<li>closed：关闭状态，断路器放行所有请求，并开始统计异常比例、慢请求比例。超过阈值则切换到open状态</li>
+<li>open：打开状态，服务调用被<strong>熔断</strong>，访问被熔断服务的请求会被拒绝，快速失败，直接走降级逻辑。Open状态5秒后会进入half-open状态</li>
+<li>half-open：半开状态，放行一次请求，根据执行结果来判断接下来的操作。<ul>
+<li>请求成功：则切换到closed状态</li>
+<li>请求失败：则切换到open状态</li>
+</ul>
+</li>
+</ul>
+<p>断路器熔断策略有三种：慢调用、异常比例、异常数</p>
+<h5 id="慢调用"><a href="#慢调用" class="headerlink" title="慢调用"></a>慢调用</h5><p><strong>慢调用</strong>：业务的响应时长（RT）大于指定时长的请求认定为慢调用请求。在指定时间内，如果请求数量超过设定的最小数量，慢调用比例大于设定的阈值，则触发熔断。</p>
+<p>例如：</p>
+<p><img src="/assets/image-20210716145934347.png" srcset="/img/loading.gif" lazyload alt="image-20210716145934347"></p>
+<p>解读：RT超过500ms的调用是慢调用，统计最近10000ms内的请求，如果请求量超过10次，并且慢调用比例不低于0.5，则触发熔断，熔断时长为5秒。然后进入half-open状态，放行一次请求做测试。</p>
+<p><strong>案例</strong></p>
+<p>需求：给 UserClient的查询用户接口设置降级规则，慢调用的RT阈值为50ms，统计时间为1秒，最小请求数量为5，失败阈值比例为0.4，熔断时长为5</p>
+<h6 id="1）设置慢调用"><a href="#1）设置慢调用" class="headerlink" title="1）设置慢调用"></a>1）设置慢调用</h6><p>修改user-service中的/user/{id}这个接口的业务。通过休眠模拟一个延迟时间：</p>
+<p><img src="/assets/image-20210716150234787.png" srcset="/img/loading.gif" lazyload alt="image-20210716150234787"></p>
+<p>此时，orderId=101的订单，关联的是id为1的用户，调用时长为60ms：</p>
+<p><img src="/assets/image-20210716150510956.png" srcset="/img/loading.gif" lazyload alt="image-20210716150510956"></p>
+<p>orderId=102的订单，关联的是id为2的用户，调用时长为非常短；</p>
+<p><img src="/assets/image-20210716150605208.png" srcset="/img/loading.gif" lazyload alt="image-20210716150605208"></p>
+<h6 id="2）设置熔断规则"><a href="#2）设置熔断规则" class="headerlink" title="2）设置熔断规则"></a>2）设置熔断规则</h6><p>下面，给feign接口设置降级规则：</p>
+<p><img src="/assets/image-20210716150654094.png" srcset="/img/loading.gif" lazyload alt="image-20210716150654094"></p>
+<p>规则：</p>
+<p><img src="/assets/image-20210716150740434.png" srcset="/img/loading.gif" lazyload alt="image-20210716150740434"></p>
+<p>超过50ms的请求都会被认为是慢请求</p>
+<h6 id="3）测试"><a href="#3）测试" class="headerlink" title="3）测试"></a>3）测试</h6><p>在浏览器访问：<a target="_blank" rel="noopener" href="http://localhost:8088/order/101%EF%BC%8C%E5%BF%AB%E9%80%9F%E5%88%B7%E6%96%B05%E6%AC%A1%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%8F%91%E7%8E%B0%EF%BC%9A">http://localhost:8088/order/101，快速刷新5次，可以发现：</a></p>
+<p><img src="/assets/image-20210716150911004.png" srcset="/img/loading.gif" lazyload alt="image-20210716150911004"></p>
+<p>触发了熔断，请求时长缩短至5ms，快速失败了，并且走降级逻辑，返回的null</p>
+<p>在浏览器访问：<a target="_blank" rel="noopener" href="http://localhost:8088/order/102%EF%BC%8C%E7%AB%9F%E7%84%B6%E4%B9%9F%E8%A2%AB%E7%86%94%E6%96%AD%E4%BA%86%EF%BC%9A">http://localhost:8088/order/102，竟然也被熔断了：</a></p>
+<p><img src="/assets/image-20210716151107785.png" srcset="/img/loading.gif" lazyload alt="image-20210716151107785"></p>
+<h5 id="异常比例、异常数"><a href="#异常比例、异常数" class="headerlink" title="异常比例、异常数"></a>异常比例、异常数</h5><p><strong>异常比例或异常数</strong>：统计指定时间内的调用，如果调用次数超过指定请求数，并且出现异常的比例达到设定的比例阈值（或超过指定异常数），则触发熔断。</p>
+<p>例如，一个异常比例设置：</p>
+<p><img src="/assets/image-20210716131430682.png" srcset="/img/loading.gif" lazyload alt="image-20210716131430682"></p>
+<p>解读：统计最近1000ms内的请求，如果请求量超过10次，并且异常比例不低于0.4，则触发熔断。</p>
+<p>一个异常数设置：</p>
+<p><img src="/assets/image-20210716131522912.png" srcset="/img/loading.gif" lazyload alt="image-20210716131522912"></p>
+<p>解读：统计最近1000ms内的请求，如果请求量超过10次，并且异常比例不低于2次，则触发熔断。</p>
+<p><strong>案例</strong></p>
+<p>需求：给 UserClient的查询用户接口设置降级规则，统计时间为1秒，最小请求数量为5，失败阈值比例为0.4，熔断时长为5s</p>
+<h6 id="1）设置异常请求"><a href="#1）设置异常请求" class="headerlink" title="1）设置异常请求"></a>1）设置异常请求</h6><p>首先，修改user-service中的/user/{id}这个接口的业务。手动抛出异常，以触发异常比例的熔断：</p>
+<p><img src="/assets/image-20210716151348183.png" srcset="/img/loading.gif" lazyload alt="image-20210716151348183"></p>
+<p>也就是说，id 为 2时，就会触发异常</p>
+<h6 id="2）设置熔断规则-1"><a href="#2）设置熔断规则-1" class="headerlink" title="2）设置熔断规则"></a>2）设置熔断规则</h6><p>下面，给feign接口设置降级规则：</p>
+<p><img src="/assets/image-20210716150654094.png" srcset="/img/loading.gif" lazyload alt="image-20210716150654094"></p>
+<p>规则：</p>
+<p><img src="/assets/image-20210716151538785.png" srcset="/img/loading.gif" lazyload alt="image-20210716151538785"></p>
+<p>在5次请求中，只要异常比例超过0.4，也就是有2次以上的异常，就会触发熔断。</p>
+<h6 id="3）测试-1"><a href="#3）测试-1" class="headerlink" title="3）测试"></a>3）测试</h6><p>在浏览器快速访问：<a target="_blank" rel="noopener" href="http://localhost:8088/order/102%EF%BC%8C%E5%BF%AB%E9%80%9F%E5%88%B7%E6%96%B05%E6%AC%A1%EF%BC%8C%E8%A7%A6%E5%8F%91%E7%86%94%E6%96%AD%EF%BC%9A">http://localhost:8088/order/102，快速刷新5次，触发熔断：</a></p>
+<p><img src="/assets/image-20210716151722916.png" srcset="/img/loading.gif" lazyload alt="image-20210716151722916"></p>
+<p>此时，我们去访问本来应该正常的103：</p>
+<p><img src="/assets/image-20210716151844817.png" srcset="/img/loading.gif" lazyload alt="image-20210716151844817"></p>
+<h1 id="授权规则"><a href="#授权规则" class="headerlink" title="授权规则"></a>授权规则</h1><p>授权规则可以对请求方来源做判断和控制。</p>
+<h2 id="授权规则-1"><a href="#授权规则-1" class="headerlink" title="授权规则"></a>授权规则</h2><h5 id="基本规则"><a href="#基本规则" class="headerlink" title="基本规则"></a>基本规则</h5><p>授权规则可以对调用方的来源做控制，有白名单和黑名单两种方式。</p>
+<ul>
+<li><p>白名单：来源（origin）在白名单内的调用者允许访问</p>
+</li>
+<li><p>黑名单：来源（origin）在黑名单内的调用者不允许访问</p>
+</li>
+</ul>
+<p>点击左侧菜单的授权，可以看到授权规则：</p>
+<p><img src="/assets/image-20210716152010750.png" srcset="/img/loading.gif" lazyload alt="image-20210716152010750"></p>
+<ul>
+<li><p>资源名：就是受保护的资源，例如/order/{orderId}</p>
+</li>
+<li><p>流控应用：是来源者的名单，</p>
+<ul>
+<li>如果是勾选白名单，则名单中的来源被许可访问。</li>
+<li>如果是勾选黑名单，则名单中的来源被禁止访问。</li>
+</ul>
+</li>
+</ul>
+<p>比如：</p>
+<p><img src="/assets/image-20210716152349191.png" srcset="/img/loading.gif" lazyload alt="image-20210716152349191"></p>
+<p>我们允许请求从gateway到order-service，不允许浏览器访问order-service，那么白名单中就要填写<strong>网关的来源名称（origin）</strong>。</p>
+<h5 id="如何获取origin"><a href="#如何获取origin" class="headerlink" title="如何获取origin"></a>如何获取origin</h5><p>Sentinel是通过RequestOriginParser这个接口的parseOrigin来获取请求的来源的。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">RequestOriginParser</span> {<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 从请求request对象中获取origin，获取方式自定义</span><br><span class="hljs-comment">     */</span><br>    String <span class="hljs-title function_">parseOrigin</span><span class="hljs-params">(HttpServletRequest request)</span>;<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>这个方法的作用就是从request对象中，获取请求者的origin值并返回。</p>
+<p>默认情况下，sentinel不管请求者从哪里来，返回值永远是default，也就是说一切请求的来源都被认为是一样的值default。</p>
+<p>因此，我们需要自定义这个接口的实现，让<strong>不同的请求，返回不同的origin</strong>。</p>
+<p>例如order-service服务中，我们定义一个RequestOriginParser的实现类：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> cn.itcast.order.sentinel;<br><br><span class="hljs-keyword">import</span> com.alibaba.csp.sentinel.adapter.spring.webmvc.callback.RequestOriginParser;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Component;<br><span class="hljs-keyword">import</span> org.springframework.util.StringUtils;<br><br><span class="hljs-keyword">import</span> javax.servlet.http.HttpServletRequest;<br><br><span class="hljs-meta">@Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HeaderOriginParser</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">RequestOriginParser</span> {<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">parseOrigin</span><span class="hljs-params">(HttpServletRequest request)</span> {<br>        <span class="hljs-comment">// 1.获取请求头</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">origin</span> <span class="hljs-operator">=</span> request.getHeader(<span class="hljs-string">"origin"</span>);<br>        <span class="hljs-comment">// 2.非空判断</span><br>        <span class="hljs-keyword">if</span> (StringUtils.isEmpty(origin)) {<br>            origin = <span class="hljs-string">"blank"</span>;<br>        }<br>        <span class="hljs-keyword">return</span> origin;<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>我们会尝试从request-header中获取origin值。</p>
+<h5 id="给网关添加请求头"><a href="#给网关添加请求头" class="headerlink" title="给网关添加请求头"></a>给网关添加请求头</h5><p>既然获取请求origin的方式是从reques-header中获取origin值，我们必须让<strong>所有从gateway路由到微服务的请求都带上origin头</strong>。</p>
+<p>这个需要利用之前学习的一个GatewayFilter来实现，AddRequestHeaderGatewayFilter。</p>
+<p>修改gateway服务中的application.yml，添加一个defaultFilter：</p>
+<figure class="highlight yaml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">cloud:</span><br>    <span class="hljs-attr">gateway:</span><br>      <span class="hljs-attr">default-filters:</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-string">AddRequestHeader=origin,gateway</span><br>      <span class="hljs-attr">routes:</span><br>       <span class="hljs-comment"># ...略</span><br></code></pre></td></tr></tbody></table></figure>
+
+<p>这样，从gateway路由的所有请求都会带上origin头，值为gateway。而从其它地方到达微服务的请求则没有这个头。</p>
+<h5 id="配置授权规则"><a href="#配置授权规则" class="headerlink" title="配置授权规则"></a>配置授权规则</h5><p>接下来，我们添加一个授权规则，放行origin值为gateway的请求。</p>
+<p><img src="/assets/image-20210716153250134.png" srcset="/img/loading.gif" lazyload alt="image-20210716153250134"></p>
+<p>配置如下：</p>
+<p><img src="/assets/image-20210716153301069.png" srcset="/img/loading.gif" lazyload alt="image-20210716153301069"></p>
+<p>现在，我们直接跳过网关，访问order-service服务：</p>
+<p><img src="/assets/image-20210716153348396.png" srcset="/img/loading.gif" lazyload alt="image-20210716153348396"></p>
+<p>通过网关访问：</p>
+<p><img src="/assets/image-20210716153434095.png" srcset="/img/loading.gif" lazyload alt="image-20210716153434095"></p>
+<h2 id="自定义异常结果"><a href="#自定义异常结果" class="headerlink" title="自定义异常结果"></a>自定义异常结果</h2><p>默认情况下，发生限流、降级、授权拦截时，都会抛出异常到调用方。异常结果都是flow limmiting（限流）。这样不够友好，无法得知是限流还是降级还是授权拦截。</p>
+<h5 id="异常类型"><a href="#异常类型" class="headerlink" title="异常类型"></a>异常类型</h5><p>而如果要自定义异常时的返回结果，需要实现BlockExceptionHandler接口：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">BlockExceptionHandler</span> {<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 处理请求被限流、降级、授权拦截时抛出的异常：BlockException</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">handle</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response, BlockException e)</span> <span class="hljs-keyword">throws</span> Exception;<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>这个方法有三个参数：</p>
+<ul>
+<li>HttpServletRequest request：request对象</li>
+<li>HttpServletResponse response：response对象</li>
+<li>BlockException e：被sentinel拦截时抛出的异常</li>
+</ul>
+<p>这里的BlockException包含多个不同的子类：</p>
+<table>
+<thead>
+<tr>
+<th><strong>异常</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FlowException</td>
+<td>限流异常</td>
+</tr>
+<tr>
+<td>ParamFlowException</td>
+<td>热点参数限流的异常</td>
+</tr>
+<tr>
+<td>DegradeException</td>
+<td>降级异常</td>
+</tr>
+<tr>
+<td>AuthorityException</td>
+<td>授权规则异常</td>
+</tr>
+<tr>
+<td>SystemBlockException</td>
+<td>系统规则异常</td>
+</tr>
+</tbody></table>
+<h5 id="自定义异常处理"><a href="#自定义异常处理" class="headerlink" title="自定义异常处理"></a>自定义异常处理</h5><p>下面，我们就在order-service定义一个自定义异常处理类：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> cn.itcast.order.sentinel;<br><br><span class="hljs-keyword">import</span> com.alibaba.csp.sentinel.adapter.spring.webmvc.callback.BlockExceptionHandler;<br><span class="hljs-keyword">import</span> com.alibaba.csp.sentinel.slots.block.BlockException;<br><span class="hljs-keyword">import</span> com.alibaba.csp.sentinel.slots.block.authority.AuthorityException;<br><span class="hljs-keyword">import</span> com.alibaba.csp.sentinel.slots.block.degrade.DegradeException;<br><span class="hljs-keyword">import</span> com.alibaba.csp.sentinel.slots.block.flow.FlowException;<br><span class="hljs-keyword">import</span> com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowException;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Component;<br><br><span class="hljs-keyword">import</span> javax.servlet.http.HttpServletRequest;<br><span class="hljs-keyword">import</span> javax.servlet.http.HttpServletResponse;<br><br><span class="hljs-meta">@Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SentinelExceptionHandler</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">BlockExceptionHandler</span> {<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">handle</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response, BlockException e)</span> <span class="hljs-keyword">throws</span> Exception {<br>        <span class="hljs-type">String</span> <span class="hljs-variable">msg</span> <span class="hljs-operator">=</span> <span class="hljs-string">"未知异常"</span>;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">status</span> <span class="hljs-operator">=</span> <span class="hljs-number">429</span>;<br><br>        <span class="hljs-keyword">if</span> (e <span class="hljs-keyword">instanceof</span> FlowException) {<br>            msg = <span class="hljs-string">"请求被限流了"</span>;<br>        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (e <span class="hljs-keyword">instanceof</span> ParamFlowException) {<br>            msg = <span class="hljs-string">"请求被热点参数限流"</span>;<br>        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (e <span class="hljs-keyword">instanceof</span> DegradeException) {<br>            msg = <span class="hljs-string">"请求被降级了"</span>;<br>        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (e <span class="hljs-keyword">instanceof</span> AuthorityException) {<br>            msg = <span class="hljs-string">"没有权限访问"</span>;<br>            status = <span class="hljs-number">401</span>;<br>        }<br><br>        response.setContentType(<span class="hljs-string">"application/json;charset=utf-8"</span>);<br>        response.setStatus(status);<br>        response.getWriter().println(<span class="hljs-string">"{\"msg\": "</span> + msg + <span class="hljs-string">", \"status\": "</span> + status + <span class="hljs-string">"}"</span>);<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<p>重启测试，在不同场景下，会返回不同的异常消息.</p>
+<p>限流：</p>
+<p><img src="/assets/image-20210716153938887.png" srcset="/img/loading.gif" lazyload alt="image-20210716153938887"></p>
+<p>授权拦截时：</p>
+<p><img src="/assets/image-20210716154012736.png" srcset="/img/loading.gif" lazyload alt="image-20210716154012736"></p>
+<h1 id="规则持久化"><a href="#规则持久化" class="headerlink" title="规则持久化"></a>规则持久化</h1><p>现在，sentinel的所有规则都是内存存储，重启后所有规则都会丢失。在生产环境下，我们必须确保这些规则的持久化，避免丢失。</p>
+<h2 id="规则管理模式"><a href="#规则管理模式" class="headerlink" title="规则管理模式"></a>规则管理模式</h2><p>规则是否能持久化，取决于规则管理模式，sentinel支持三种规则管理模式：</p>
+<ul>
+<li>原始模式：Sentinel的默认模式，将规则保存在内存，重启服务会丢失。</li>
+<li>pull模式</li>
+<li>push模式</li>
+</ul>
+<h5 id="pull模式"><a href="#pull模式" class="headerlink" title="pull模式"></a>pull模式</h5><p>pull模式：控制台将配置的规则推送到Sentinel客户端，而客户端会将配置规则保存在本地文件或数据库中。以后会定时去本地文件或数据库中查询，更新本地规则。</p>
+<p><img src="/assets/image-20210716154155238.png" srcset="/img/loading.gif" lazyload alt="image-20210716154155238"></p>
+<h5 id="push模式"><a href="#push模式" class="headerlink" title="push模式"></a>push模式</h5><p>push模式：控制台将配置规则推送到远程配置中心，例如Nacos。Sentinel客户端监听Nacos，获取配置变更的推送消息，完成本地配置更新。</p>
+<p><img src="/assets/image-20210716154215456.png" srcset="/img/loading.gif" lazyload alt="image-20210716154215456"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%A1%86%E6%9E%B6/" class="category-chain-item">技术框架</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%8A%80%E6%9C%AF%E6%A1%86%E6%9E%B6/">#技术框架</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>微服务保护2</div>
+      <div>http://example.com/2022/11/10/笔记/技术2/微服务保护2/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年11月10日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/11/13/%E7%AC%94%E8%AE%B0/%E6%8A%80%E6%9C%AF2/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/" title="分布式事务">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">分布式事务</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/11/10/%E7%AC%94%E8%AE%B0/%E6%8A%80%E6%9C%AF2/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%BF%9D%E6%8A%A41/" title="微服务保护1">
+                        <span class="hidden-mobile">微服务保护1</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
