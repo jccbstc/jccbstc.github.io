@@ -87,6 +87,8 @@
       
       <tag>安装部署</tag>
       
+      <tag>seata</tag>
+      
     </tags>
     
   </entry>
@@ -189,6 +191,8 @@
       
       <tag>安装部署</tag>
       
+      <tag>sentinel</tag>
+      
     </tags>
     
   </entry>
@@ -213,6 +217,8 @@
     <tags>
       
       <tag>技术框架</tag>
+      
+      <tag>jmeter</tag>
       
     </tags>
     
@@ -425,6 +431,8 @@
     
     
     <tags>
+      
+      <tag>docker</tag>
       
       <tag>技术框架</tag>
       
