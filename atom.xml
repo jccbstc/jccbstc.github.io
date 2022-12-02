@@ -248,6 +248,34 @@
   </entry>
   
   <entry>
+    <title>数组元素移动</title>
+    <link href="http://example.com/2022/10/14/%E7%AE%97%E6%B3%95/%E6%95%B0%E7%BB%84%E5%85%83%E7%B4%A0%E7%A7%BB%E5%8A%A8/"/>
+    <id>http://example.com/2022/10/14/%E7%AE%97%E6%B3%95/%E6%95%B0%E7%BB%84%E5%85%83%E7%B4%A0%E7%A7%BB%E5%8A%A8/</id>
+    <published>2022-10-14T10:38:05.496Z</published>
+    <updated>2022-12-02T03:07:01.813Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="数组元素移动"><a href="#数组元素移动" class="headerlink" title="数组元素移动:"></a>数组元素移动:</h1><p>26.删除有序数组中的重复项 [简]</p><p>27.移除元素 [简] *</p><p>283.移动零 [简]</p><p>数组元素移动一般用双指针解法，对于诸如「相同元素最多保留 k 位元素」或者「移除特定元素」的问题，更好的做法是从题目本身性质出发，利用题目给定的要求提炼出具体的「保留逻辑」，将「保留逻辑」应用到我们的遍历到的每一个位置。</p><h2 id="26-删除有序数组中的重复项-简"><a href="#26-删除有序数组中的重复项-简" class="headerlink" title="26.删除有序数组中的重复项 [简]"></a>26.删除有序数组中的重复项 [简]</h2><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">removeDuplicates</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {<br>        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; right &lt; n; right++) {<br>            <span class="hljs-keyword">if</span> (nums[right] != nums[left]) {<br>                nums[++left] = nums[right];<br>            }<br>        }<br>        <span class="hljs-keyword">return</span> left + <span class="hljs-number">1</span>;<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure><h2 id="27-移除元素-简"><a href="#27-移除元素-简" class="headerlink" title="27.移除元素 [简]"></a>27.移除元素 [简]</h2><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">removeElement</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> val)</span> {<br>        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; right &lt; n; right++) {<br>            <span class="hljs-keyword">if</span> (nums[right] != val) {<br>                nums[left] = nums[right];<br>                left++;<br>            }<br>        }<br>        <span class="hljs-keyword">return</span> left;<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure><h2 id="283-移动零-简"><a href="#283-移动零-简" class="headerlink" title="283.移动零 [简]"></a>283.移动零 [简]</h2><p>双指针解法移动零时间复杂度过高</p><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">moveZeroes</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {<br>        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; right &lt; n; right++) {<br>            <span class="hljs-keyword">if</span> (nums[right] != <span class="hljs-number">0</span>) {<br>                swap(nums,left,right);<br>                left++;<br>            }<br>        }<br>    }<br><br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">swap</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> left, <span class="hljs-type">int</span> right)</span> {<br>        <span class="hljs-type">int</span> <span class="hljs-variable">temp</span> <span class="hljs-operator">=</span> nums[left];<br>        nums[left] = nums[right];<br>        nums[right] = temp;<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure><p>遍历数组，遇到非0数，前面有几个0就往前面移动几格</p><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">moveZeroes</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {<br>        <span class="hljs-type">int</span> n=nums.length;<br>        <span class="hljs-type">int</span> t=<span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;n;i++){<br>            <span class="hljs-keyword">if</span>(nums[i]==<span class="hljs-number">0</span>){<br>                ++t;<br>            }<span class="hljs-keyword">else</span>{<br>                nums[i-t]=nums[i];<br>            }<br>        }<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=n-<span class="hljs-number">1</span>;i&gt;n-t-<span class="hljs-number">1</span>;--i){<br>            nums[i]=<span class="hljs-number">0</span>;<br>        }<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;数组元素移动&quot;&gt;&lt;a href=&quot;#数组元素移动&quot; class=&quot;headerlink&quot; title=&quot;数组元素移动:&quot;&gt;&lt;/a&gt;数组元素移动:&lt;/h1&gt;&lt;p&gt;26.删除有序数组中的重复项 [简]&lt;/p&gt;
+&lt;p&gt;27.移除元素 [简] *&lt;/p&gt;
+&lt;p&gt;283.移</summary>
+      
+    
+    
+    
+    <category term="数据结构与算法" scheme="http://example.com/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="数组" scheme="http://example.com/tags/%E6%95%B0%E7%BB%84/"/>
+    
+    <category term="双指针" scheme="http://example.com/tags/%E5%8F%8C%E6%8C%87%E9%92%88/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Jmeter快速入门</title>
     <link href="http://example.com/2022/08/01/%E7%AC%94%E8%AE%B0/%E6%8A%80%E6%9C%AF/Jmeter%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/"/>
     <id>http://example.com/2022/08/01/%E7%AC%94%E8%AE%B0/%E6%8A%80%E6%9C%AF/Jmeter%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</id>
@@ -504,32 +532,6 @@
     <category term="技术框架" scheme="http://example.com/tags/%E6%8A%80%E6%9C%AF%E6%A1%86%E6%9E%B6/"/>
     
     <category term="RabbitMq" scheme="http://example.com/tags/RabbitMq/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>RabbitMQ部署指南</title>
-    <link href="http://example.com/2022/08/01/%E7%AC%94%E8%AE%B0/%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/RabbitMQ%E9%83%A8%E7%BD%B2%E6%8C%87%E5%8D%97/"/>
-    <id>http://example.com/2022/08/01/%E7%AC%94%E8%AE%B0/%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/RabbitMQ%E9%83%A8%E7%BD%B2%E6%8C%87%E5%8D%97/</id>
-    <published>2022-07-31T22:06:09.000Z</published>
-    <updated>2022-11-28T10:14:21.468Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="RabbitMQ部署指南"><a href="#RabbitMQ部署指南" class="headerlink" title="RabbitMQ部署指南"></a>RabbitMQ部署指南</h1><h1 id="单机部署"><a href="#单机部署" class="headerlink" title="单机部署"></a>单机部署</h1><p>我们在Centos7虚拟机中使用Docker来安装。</p><h2 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h2><p>方式一：在线拉取</p><figure class="highlight sh"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">docker pull rabbitmq:3.8-management<br></code></pre></td></tr></tbody></table></figure><p>方式二：从本地加载</p><p>在课前资料已经提供了镜像包：</p><p><img src="/assets/image-20210423191210349.png" alt="image-20210423191210349"> </p><p>上传到虚拟机中后，使用命令加载镜像即可：</p><figure class="highlight sh"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">docker load -i mq.tar<br></code></pre></td></tr></tbody></table></figure><h2 id="安装MQ"><a href="#安装MQ" class="headerlink" title="安装MQ"></a>安装MQ</h2><p>执行下面的命令来运行MQ容器：</p><figure class="highlight sh"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sh">docker run \<br> -e RABBITMQ_DEFAULT_USER=admin \<br> -e RABBITMQ_DEFAULT_PASS=111111 \<br> -v mq-plugins:/plugins \<br> --name mq \<br> --hostname mq \<br> -p 15672:15672 \<br> -p 5672:5672 \<br> -d \<br> rabbitmq:3.8-management<br></code></pre></td></tr></tbody></table></figure>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;RabbitMQ部署指南&quot;&gt;&lt;a href=&quot;#RabbitMQ部署指南&quot; class=&quot;headerlink&quot; title=&quot;RabbitMQ部署指南&quot;&gt;&lt;/a&gt;RabbitMQ部署指南&lt;/h1&gt;&lt;h1 id=&quot;单机部署&quot;&gt;&lt;a href=&quot;#单机部署&quot; cla</summary>
-      
-    
-    
-    
-    <category term="安装部署" scheme="http://example.com/categories/%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/"/>
-    
-    
-    <category term="RabbitMq" scheme="http://example.com/tags/RabbitMq/"/>
-    
-    <category term="安装部署" scheme="http://example.com/tags/%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/"/>
     
   </entry>
   
