@@ -295,6 +295,33 @@
   
   
   <entry>
+    <title>链表的倒数第k个结点</title>
+    <link href="/2022/10/14/%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8/%E5%80%92%E6%95%B0k%E8%8A%82%E7%82%B9/"/>
+    <url>/2022/10/14/%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8/%E5%80%92%E6%95%B0k%E8%8A%82%E7%82%B9/</url>
+    
+    <content type="html"><![CDATA[<h1 id="链表的倒数第k个结点"><a href="#链表的倒数第k个结点" class="headerlink" title="链表的倒数第k个结点"></a>链表的倒数第k个结点</h1><p>19.删除链表的倒数第 N 个结点 [中]</p><p>剑指 Offer 22. 链表中倒数第k个节点 [简]</p><h3 id="方法一-计算链表长度"><a href="#方法一-计算链表长度" class="headerlink" title="方法一:计算链表长度"></a>方法一:计算链表长度</h3><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getLength</span><span class="hljs-params">(ListNode head)</span> {<br>        <span class="hljs-type">int</span> <span class="hljs-variable">length</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">while</span> (head != <span class="hljs-literal">null</span>) {<br>            ++length;<br>            head = head.next;<br>        }<br>        <span class="hljs-keyword">return</span> length;<br>    }<br></code></pre></td></tr></tbody></table></figure><h3 id="方法二：栈"><a href="#方法二：栈" class="headerlink" title="方法二：栈"></a>方法二：栈</h3><h3 id="方法三：双指针"><a href="#方法三：双指针" class="headerlink" title="方法三：双指针"></a>方法三：双指针</h3><p>双指针 first 和 second的话，当 first 指向末尾的 <code>NULL</code>，<code>first</code> 与 <code>second</code> 之间相隔的元素个数为 <code>n</code> 时，那么删除掉 <code>second</code> 的下一个指针就完成了要求。</p><h2 id="19-删除链表的倒数第-N-个结点-中"><a href="#19-删除链表的倒数第-N-个结点-中" class="headerlink" title="19.删除链表的倒数第 N 个结点 [中]"></a>19.删除链表的倒数第 N 个结点 [中]</h2><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {<br>    <span class="hljs-keyword">public</span> ListNode <span class="hljs-title function_">removeNthFromEnd</span><span class="hljs-params">(ListNode head, <span class="hljs-type">int</span> n)</span> {<br>        <span class="hljs-type">ListNode</span> <span class="hljs-variable">dummy</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ListNode</span>(<span class="hljs-number">0</span>, head);<br>        <span class="hljs-type">ListNode</span> <span class="hljs-variable">first</span> <span class="hljs-operator">=</span> head;<br>        <span class="hljs-type">ListNode</span> <span class="hljs-variable">second</span> <span class="hljs-operator">=</span> dummy;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; ++i) {<br>            first = first.next;<br>        }<br>        <span class="hljs-keyword">while</span> (first != <span class="hljs-literal">null</span>) {<br>            first = first.next;<br>            second = second.next;<br>        }<br>        second.next = second.next.next;<br>        <span class="hljs-type">ListNode</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> dummy.next;<br>        <span class="hljs-keyword">return</span> ans;<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure><h2 id="剑指-Offer-22-链表中倒数第k个节点-简"><a href="#剑指-Offer-22-链表中倒数第k个节点-简" class="headerlink" title="剑指 Offer 22. 链表中倒数第k个节点 [简]"></a>剑指 Offer 22. 链表中倒数第k个节点 [简]</h2><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {<br>    <span class="hljs-keyword">public</span> ListNode <span class="hljs-title function_">getKthFromEnd</span><span class="hljs-params">(ListNode head, <span class="hljs-type">int</span> k)</span> {<br>        <span class="hljs-type">ListNode</span> <span class="hljs-variable">former</span> <span class="hljs-operator">=</span> head, latter = head;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; k; i++)<br>            former = former.next;<br>        <span class="hljs-keyword">while</span>(former != <span class="hljs-literal">null</span>) {<br>            former = former.next;<br>            latter = latter.next;<br>        }<br>        <span class="hljs-keyword">return</span> latter;<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>数据结构与算法</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>双指针</tag>
+      
+      <tag>链表</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Jmeter快速入门</title>
     <link href="/2022/08/01/%E7%AC%94%E8%AE%B0/%E6%8A%80%E6%9C%AF/Jmeter%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/"/>
     <url>/2022/08/01/%E7%AC%94%E8%AE%B0/%E6%8A%80%E6%9C%AF/Jmeter%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</url>
