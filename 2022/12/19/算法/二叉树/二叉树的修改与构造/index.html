@@ -16,16 +16,17 @@
   <meta name="author" content="及川彻">
   <meta name="keywords" content="">
   
-    <meta name="description" content="二叉树的最大&#x2F;小深度104.二叉树的最大深度 111.二叉树的最小深度 104.二叉树的最大深度DFS比BFS时间复杂度更低 DFS12345678910class Solution {    public int maxDepth(TreeNode root) {        if (root &#x3D;&#x3D; null) {            return 0;        }        in">
+    <meta name="description" content="二叉树的修改与构造226.翻转二叉树 106.从中序与后序遍历序列构造二叉树 105.从前序与中序遍历序列构造二叉树 654.最大二叉树 617.合并二叉树 226.翻转二叉树123456789101112class Solution {    public TreeNode invertTree(TreeNode root) {        if (root &#x3D;&#x3D; null) return n">
 <meta property="og:type" content="article">
-<meta property="og:title" content="二叉树的最大&#x2F;小深度">
-<meta property="og:url" content="http://example.com/2022/12/14/%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E6%A0%91/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E5%A4%A7%E5%B0%8F%E6%B7%B1%E5%BA%A6/index.html">
+<meta property="og:title" content="二叉树的修改与构造">
+<meta property="og:url" content="http://example.com/2022/12/19/%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E6%A0%91/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E4%BF%AE%E6%94%B9%E4%B8%8E%E6%9E%84%E9%80%A0/index.html">
 <meta property="og:site_name" content="业余的日落患者">
-<meta property="og:description" content="二叉树的最大&#x2F;小深度104.二叉树的最大深度 111.二叉树的最小深度 104.二叉树的最大深度DFS比BFS时间复杂度更低 DFS12345678910class Solution {    public int maxDepth(TreeNode root) {        if (root &#x3D;&#x3D; null) {            return 0;        }        in">
+<meta property="og:description" content="二叉树的修改与构造226.翻转二叉树 106.从中序与后序遍历序列构造二叉树 105.从前序与中序遍历序列构造二叉树 654.最大二叉树 617.合并二叉树 226.翻转二叉树123456789101112class Solution {    public TreeNode invertTree(TreeNode root) {        if (root &#x3D;&#x3D; null) return n">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-12-14T03:41:12.090Z">
-<meta property="article:modified_time" content="2022-12-18T02:42:49.736Z">
+<meta property="article:published_time" content="2022-12-19T03:36:48.272Z">
+<meta property="article:modified_time" content="2022-12-19T03:37:56.901Z">
 <meta property="article:author" content="及川彻">
+<meta property="article:tag" content="分治">
 <meta property="article:tag" content="二叉树">
 <meta property="article:tag" content="深度优先搜索">
 <meta property="article:tag" content="树">
@@ -36,7 +37,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>二叉树的最大/小深度 - 业余的日落患者</title>
+  <title>二叉树的修改与构造 - 业余的日落患者</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -216,7 +217,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="二叉树的最大/小深度"></span>
+            <span id="subtitle" data-typed-text="二叉树的修改与构造"></span>
           
         </div>
 
@@ -227,8 +228,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-12-14 11:41" pubdate>
-          2022年12月14日 中午
+        <time datetime="2022-12-19 11:36" pubdate>
+          2022年12月19日 中午
         </time>
       </span>
     
@@ -239,7 +240,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.4k 字
+          2.4k 字
         
       </span>
     
@@ -250,7 +251,7 @@
         
         
         
-          12 分钟
+          20 分钟
         
       </span>
     
@@ -288,35 +289,49 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">二叉树的最大/小深度</h1>
+            <h1 style="display: none">二叉树的修改与构造</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="二叉树的最大-x2F-小深度"><a href="#二叉树的最大-x2F-小深度" class="headerlink" title="二叉树的最大/小深度"></a>二叉树的最大/小深度</h1><p>104.二叉树的最大深度</p>
-<p>111.二叉树的最小深度</p>
-<h2 id="104-二叉树的最大深度"><a href="#104-二叉树的最大深度" class="headerlink" title="104.二叉树的最大深度"></a>104.二叉树的最大深度</h2><p>DFS比BFS时间复杂度更低</p>
-<h3 id="DFS"><a href="#DFS" class="headerlink" title="DFS"></a>DFS</h3><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxDepth</span><span class="hljs-params">(TreeNode root)</span> {<br>        <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) {<br>            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>        }<br>        <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> maxDepth(root.left);<br>        <span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> maxDepth(root.right);<br>        <span class="hljs-keyword">return</span> Math.max(left,right) + <span class="hljs-number">1</span>;<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
-
-
-
-<h3 id="BFS"><a href="#BFS" class="headerlink" title="BFS"></a>BFS</h3><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxDepth</span><span class="hljs-params">(TreeNode root)</span> {<br>        Queue&lt;TreeNode&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();<br>        <span class="hljs-keyword">if</span>(root != <span class="hljs-literal">null</span>){<br>            queue.add(root);<br>        }<br>        <span class="hljs-type">int</span> <span class="hljs-variable">depth</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">while</span>(!queue.isEmpty()) {<br>            <span class="hljs-type">int</span> <span class="hljs-variable">len</span> <span class="hljs-operator">=</span> queue.size();<br>            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; len; ++i){<br>                <span class="hljs-type">TreeNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> queue.poll();<br>                <span class="hljs-keyword">if</span>(node.left != <span class="hljs-literal">null</span>) {<br>                    queue.add(node.left);<br>                }<br>                <span class="hljs-keyword">if</span>(node.right != <span class="hljs-literal">null</span>) {<br>                    queue.add(node.right);<br>                }<br>            }<br>            depth ++;<br>        }<br>        <span class="hljs-keyword">return</span> depth;<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
-
+                <h1 id="二叉树的修改与构造"><a href="#二叉树的修改与构造" class="headerlink" title="二叉树的修改与构造"></a>二叉树的修改与构造</h1><p>226.翻转二叉树</p>
+<p>106.从中序与后序遍历序列构造二叉树</p>
+<p>105.从前序与中序遍历序列构造二叉树</p>
+<p>654.最大二叉树</p>
+<p>617.合并二叉树</p>
+<h2 id="226-翻转二叉树"><a href="#226-翻转二叉树" class="headerlink" title="226.翻转二叉树"></a>226.翻转二叉树</h2><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {<br>    <span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">invertTree</span><span class="hljs-params">(TreeNode root)</span> {<br>        <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        invertTree(root.left);<br>        invertTree(root.right);<br><br>        <span class="hljs-type">TreeNode</span> <span class="hljs-variable">temp</span> <span class="hljs-operator">=</span> root.left;<br>        root.left = root.right;<br>        root.right = temp;<br>        <span class="hljs-keyword">return</span> root;<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
 
 
 
 
 
 
-<h2 id="111-二叉树的最小深度"><a href="#111-二叉树的最小深度" class="headerlink" title="111.二叉树的最小深度"></a>111.二叉树的最小深度</h2><p><strong>只有当左右孩子都为空的时候，才说明遍历的最低点了。如果其中一个孩子为空则不是最低点</strong></p>
-<p>BFS比DFS时间复杂度更低</p>
-<h3 id="DFS-1"><a href="#DFS-1" class="headerlink" title="DFS"></a>DFS</h3><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minDepth</span><span class="hljs-params">(TreeNode root)</span> {<br>        <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) {<br>            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>        }<br><br>        <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> minDepth(root.left);<br>        <span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> minDepth(root.right);<br><br>        <span class="hljs-keyword">if</span>(root.left == <span class="hljs-literal">null</span>) {<br>            <span class="hljs-keyword">return</span> right + <span class="hljs-number">1</span>;<br>        }<br><br>        <span class="hljs-keyword">if</span>(root.right == <span class="hljs-literal">null</span>) {<br>            <span class="hljs-keyword">return</span> left + <span class="hljs-number">1</span>;<br>        }<br>        <span class="hljs-keyword">return</span> Math.min(left,right) + <span class="hljs-number">1</span>;<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<h2 id="106-从中序与后序遍历序列构造二叉树"><a href="#106-从中序与后序遍历序列构造二叉树" class="headerlink" title="106.从中序与后序遍历序列构造二叉树"></a>106.从中序与后序遍历序列构造二叉树</h2><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {<br>    <span class="hljs-type">int</span> post_idx;<br>    <span class="hljs-type">int</span>[] postorder;<br>    Map&lt;Integer, Integer&gt; idx_map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;Integer, Integer&gt;();<br><br>    <span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">helper</span><span class="hljs-params">(<span class="hljs-type">int</span> in_left, <span class="hljs-type">int</span> in_right)</span> {<br>        <span class="hljs-keyword">if</span> (in_left &gt; in_right) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br><br>        <span class="hljs-type">int</span> <span class="hljs-variable">root_val</span> <span class="hljs-operator">=</span> postorder[post_idx];<br>        <span class="hljs-type">TreeNode</span> <span class="hljs-variable">root</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeNode</span>(root_val);<br><br>        <span class="hljs-type">int</span> <span class="hljs-variable">index</span> <span class="hljs-operator">=</span> idx_map.get(root_val);<br><br>        post_idx--;<br>        root.right = helper(index + <span class="hljs-number">1</span>, in_right);<br>        root.left = helper(in_left, index - <span class="hljs-number">1</span>);<br>        <span class="hljs-keyword">return</span> root;<br>    }<br><br>    <span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">buildTree</span><span class="hljs-params">(<span class="hljs-type">int</span>[] inorder, <span class="hljs-type">int</span>[] postorder)</span> {<br>        <span class="hljs-built_in">this</span>.postorder = postorder;<br>        post_idx = postorder.length - <span class="hljs-number">1</span>;<br><br>        <span class="hljs-type">int</span> <span class="hljs-variable">idx</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (Integer val : inorder) {<br>            idx_map.put(val, idx++);<br>        }<br>        <br>        <span class="hljs-keyword">return</span> helper(<span class="hljs-number">0</span>, inorder.length - <span class="hljs-number">1</span>);<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
 
 
 
 
 
-<h3 id="BFS-1"><a href="#BFS-1" class="headerlink" title="BFS"></a>BFS</h3><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minDepth</span><span class="hljs-params">(TreeNode root)</span>{<br>        <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) {<br>            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>        }<br>        Queue&lt;TreeNode&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();<br>        queue.offer(root);<br>        <span class="hljs-type">int</span> <span class="hljs-variable">depth</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">while</span> (!queue.isEmpty()){<br>            <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> queue.size();<br>            depth++;<br>            <span class="hljs-type">TreeNode</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {<br>                cur = queue.poll();<br>                <span class="hljs-comment">//如果当前节点的左右孩子都为空，直接返回最小深度</span><br>                <span class="hljs-keyword">if</span> (cur.left == <span class="hljs-literal">null</span> &amp;&amp; cur.right == <span class="hljs-literal">null</span>){<br>                    <span class="hljs-keyword">return</span> depth;<br>                }<br>                <span class="hljs-keyword">if</span> (cur.left != <span class="hljs-literal">null</span>) queue.offer(cur.left);<br>                <span class="hljs-keyword">if</span> (cur.right != <span class="hljs-literal">null</span>) queue.offer(cur.right);<br>            }<br>        }<br>        <span class="hljs-keyword">return</span> depth;<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+
+<h2 id="105-从前序与中序遍历序列构造二叉树"><a href="#105-从前序与中序遍历序列构造二叉树" class="headerlink" title="105.从前序与中序遍历序列构造二叉树"></a>105.从前序与中序遍历序列构造二叉树</h2><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {<br>    <span class="hljs-type">int</span> <span class="hljs-variable">pre_id</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>    <span class="hljs-type">int</span>[] preorder;<br>    HashMap&lt;Integer,Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;Integer,Integer&gt;();<br><br>    <span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">buildTree</span><span class="hljs-params">(<span class="hljs-type">int</span>[] preorder, <span class="hljs-type">int</span>[] inorder)</span> {<br>        <span class="hljs-built_in">this</span>.preorder = preorder;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">index</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span>(Integer node : inorder) {<br>            map.put(node,index ++);<br>        }<br>        <span class="hljs-keyword">return</span> build(<span class="hljs-number">0</span>,inorder.length - <span class="hljs-number">1</span>);<br>    }<br><br>    <span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">build</span><span class="hljs-params">(<span class="hljs-type">int</span> left_index,<span class="hljs-type">int</span> right_index)</span> {<br>        <span class="hljs-keyword">if</span>(left_index &gt; right_index) {<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        }<br><br>        <span class="hljs-type">int</span> <span class="hljs-variable">root_val</span> <span class="hljs-operator">=</span> preorder[pre_id];<br>        <span class="hljs-type">TreeNode</span> <span class="hljs-variable">root</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeNode</span>(root_val);<br>        pre_id ++;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">index</span> <span class="hljs-operator">=</span> map.get(root_val);<br><br>        root.left = build(left_index,index - <span class="hljs-number">1</span>);<br>        root.right = build(index + <span class="hljs-number">1</span>,right_index);<br>        <span class="hljs-keyword">return</span> root;<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+
+
+
+
+<h2 id="654-最大二叉树"><a href="#654-最大二叉树" class="headerlink" title="654.最大二叉树"></a>654.最大二叉树</h2><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {<br>    <span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">constructMaximumBinaryTree</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {<br>        <span class="hljs-keyword">return</span> dfs(nums,<span class="hljs-number">0</span>,nums.length - <span class="hljs-number">1</span>);<br>    }<br><br>    <span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> left, <span class="hljs-type">int</span> right)</span> {<br>        <span class="hljs-keyword">if</span> (left &gt; right) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">index</span> <span class="hljs-operator">=</span> getBig(nums,left,right);<br>        <span class="hljs-type">TreeNode</span> <span class="hljs-variable">root</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeNode</span>(nums[index]);<br><br>        root.left = dfs(nums,left,index - <span class="hljs-number">1</span>);<br>        root.right = dfs(nums,index + <span class="hljs-number">1</span>,right);<br>        <span class="hljs-keyword">return</span> root;<br>    }<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getBig</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> left, <span class="hljs-type">int</span> right)</span> {<br>        <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> left;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> left + <span class="hljs-number">1</span>; i &lt;= right; ++i) {<br>            <span class="hljs-keyword">if</span> (nums[i] &gt; nums[best]) {<br>                best = i;<br>            }<br>        }<br>        <span class="hljs-keyword">return</span> best;<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+
+
+
+
+<h2 id="617-合并二叉树"><a href="#617-合并二叉树" class="headerlink" title="617.合并二叉树"></a>617.合并二叉树</h2><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {<br>    <span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">mergeTrees</span><span class="hljs-params">(TreeNode root1, TreeNode root2)</span> {<br>        <span class="hljs-keyword">if</span>(root1 == <span class="hljs-literal">null</span>) {<br>            <span class="hljs-keyword">return</span> root2;<br>        }<br>        <span class="hljs-keyword">if</span>(root2 == <span class="hljs-literal">null</span>) {<br>            <span class="hljs-keyword">return</span> root1;<br>        }<br><br>        <span class="hljs-type">TreeNode</span> <span class="hljs-variable">root</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeNode</span>(root1.val + root2.val);<br><br>        root.left = mergeTrees(root1.left,root2.left);<br>        root.right = mergeTrees(root1.right,root2.right);<br>        <span class="hljs-keyword">return</span> root;<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
 
 
                 
@@ -351,6 +366,8 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
+        <a href="/tags/%E5%88%86%E6%B2%BB/">#分治</a>
+      
         <a href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/">#二叉树</a>
       
         <a href="/tags/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/">#深度优先搜索</a>
@@ -371,18 +388,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/12/14/%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E6%A0%91/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E8%B7%AF%E5%BE%84%E9%97%AE%E9%A2%98/" title="二叉树的路径问题">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">二叉树的路径问题</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/12/12/%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E6%A0%91/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%B1%82%E5%BA%8F%E9%81%8D%E5%8E%86/" title="二叉树的层序遍历">
-                        <span class="hidden-mobile">二叉树的层序遍历</span>
+                      <a href="/2022/12/18/%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E6%A0%91/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88%E9%97%AE%E9%A2%98/" title="二叉树的最近公共祖先问题">
+                        <span class="hidden-mobile">二叉树的最近公共祖先问题</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
