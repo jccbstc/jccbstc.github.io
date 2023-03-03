@@ -1,0 +1,904 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/logo/h1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="及川彻">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="分布式缓存	哨兵&amp;分片集群– 基于Redis集群解决单机Redis存在的问题 单机的Redis存在四大问题：  Redis哨兵Redis提供了哨兵（Sentinel）机制来实现主从集群的自动故障恢复。 哨兵原理集群结构和作用哨兵的结构如图：  哨兵的作用如下：  监控：Sentinel 会不断检查您的master和slave是否按预期工作 自动故障恢复：如果master故障，Sentine">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式缓存	哨兵&amp;分片集群">
+<meta property="og:url" content="http://example.com/2022/11/14/%E7%AC%94%E8%AE%B0/%E6%8A%80%E6%9C%AF2/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%982/index.html">
+<meta property="og:site_name" content="业余的日落患者">
+<meta property="og:description" content="分布式缓存	哨兵&amp;分片集群– 基于Redis集群解决单机Redis存在的问题 单机的Redis存在四大问题：  Redis哨兵Redis提供了哨兵（Sentinel）机制来实现主从集群的自动故障恢复。 哨兵原理集群结构和作用哨兵的结构如图：  哨兵的作用如下：  监控：Sentinel 会不断检查您的master和slave是否按预期工作 自动故障恢复：如果master故障，Sentine">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/assets/image-20210725144240631.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725154528072.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725154632354.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725154816841.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725155747294.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725155820320.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725155850200.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725160138290.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725160448139.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725160448139.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725161007099.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725161241793.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725161401925.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725161506241.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725161540841.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725161637152.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725161731738.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725161817642.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725162030478.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725162101228.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725162145497.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725162224058.png">
+<meta property="og:image" content="http://example.com/assets/image-20210727161152065.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725162319490.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725162408979.png">
+<meta property="og:image" content="http://example.com/assets/image-20210727160803386.png">
+<meta property="og:image" content="http://example.com/assets/image-20210725162441407.png">
+<meta property="og:image" content="http://example.com/assets/image-20210727160037766.png">
+<meta property="og:image" content="http://example.com/assets/image-20210727161152065.png">
+<meta property="article:published_time" content="2022-11-14T07:57:37.850Z">
+<meta property="article:modified_time" content="2022-11-28T06:32:10.903Z">
+<meta property="article:author" content="及川彻">
+<meta property="article:tag" content="技术框架">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/assets/image-20210725144240631.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>分布式缓存	哨兵&amp;分片集群 - 业余的日落患者</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="业余的日落患者" type="application/atom+xml">
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>晴天与晚风</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="分布式缓存	哨兵&amp;分片集群"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-11-14 15:57" pubdate>
+          2022年11月14日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          38 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">分布式缓存	哨兵&amp;分片集群</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="分布式缓存哨兵-amp-分片集群"><a href="#分布式缓存哨兵-amp-分片集群" class="headerlink" title="分布式缓存	哨兵&amp;分片集群"></a>分布式缓存	哨兵&amp;分片集群</h1><p>– 基于Redis集群解决单机Redis存在的问题</p>
+<p>单机的Redis存在四大问题：</p>
+<p><img src="/assets/image-20210725144240631.png" srcset="/img/loading.gif" lazyload alt="image-20210725144240631"></p>
+<h1 id="Redis哨兵"><a href="#Redis哨兵" class="headerlink" title="Redis哨兵"></a>Redis哨兵</h1><p>Redis提供了哨兵（Sentinel）机制来实现主从集群的自动故障恢复。</p>
+<h2 id="哨兵原理"><a href="#哨兵原理" class="headerlink" title="哨兵原理"></a>哨兵原理</h2><h4 id="集群结构和作用"><a href="#集群结构和作用" class="headerlink" title="集群结构和作用"></a>集群结构和作用</h4><p>哨兵的结构如图：</p>
+<p><img src="/assets/image-20210725154528072.png" srcset="/img/loading.gif" lazyload alt="image-20210725154528072"></p>
+<p>哨兵的作用如下：</p>
+<ul>
+<li><strong>监控</strong>：Sentinel 会不断检查您的master和slave是否按预期工作</li>
+<li><strong>自动故障恢复</strong>：如果master故障，Sentinel会将一个slave提升为master。当故障实例恢复后也以新的master为主</li>
+<li><strong>通知</strong>：Sentinel充当Redis客户端的服务发现来源，当集群发生故障转移时，会将最新信息推送给Redis的客户端</li>
+</ul>
+<h4 id="集群监控原理"><a href="#集群监控原理" class="headerlink" title="集群监控原理"></a>集群监控原理</h4><p>Sentinel基于心跳机制监测服务状态，每隔1秒向集群的每个实例发送ping命令：</p>
+<p>•主观下线：如果某sentinel节点发现某实例未在规定时间响应，则认为该实例<strong>主观下线</strong>。</p>
+<p>•客观下线：若超过指定数量（quorum）的sentinel都认为该实例主观下线，则该实例<strong>客观下线</strong>。quorum值最好超过Sentinel实例数量的一半。</p>
+<p><img src="/assets/image-20210725154632354.png" srcset="/img/loading.gif" lazyload alt="image-20210725154632354"></p>
+<h4 id="集群故障恢复原理"><a href="#集群故障恢复原理" class="headerlink" title="集群故障恢复原理"></a>集群故障恢复原理</h4><p>一旦发现master故障，sentinel需要在salve中选择一个作为新的master，选择依据是这样的：</p>
+<ul>
+<li>首先会判断slave节点与master节点断开时间长短，如果超过指定值（down-after-milliseconds * 10）则会排除该slave节点</li>
+<li>然后判断slave节点的slave-priority值，越小优先级越高，如果是0则永不参与选举</li>
+<li>如果slave-prority一样，则判断slave节点的offset值，越大说明数据越新，优先级越高</li>
+<li>最后是判断slave节点的运行id大小，越小优先级越高。</li>
+</ul>
+<p>当选出一个新的master后，该如何实现切换呢？</p>
+<p>流程如下：</p>
+<ul>
+<li>sentinel给备选的slave1节点发送slaveof no one命令，让该节点成为master</li>
+<li>sentinel给所有其它slave发送slaveof 192.168.150.101 7002 命令，让这些slave成为新master的从节点，开始从新的master上同步数据。</li>
+<li>最后，sentinel将故障节点标记为slave，当故障节点恢复后会自动成为新的master的slave节点</li>
+</ul>
+<p><img src="/assets/image-20210725154816841.png" srcset="/img/loading.gif" lazyload alt="image-20210725154816841"></p>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>Sentinel的三个作用是什么？</p>
+<ul>
+<li>监控</li>
+<li>故障转移</li>
+<li>通知</li>
+</ul>
+<p>Sentinel如何判断一个redis实例是否健康？</p>
+<ul>
+<li>每隔1秒发送一次ping命令，如果超过一定时间没有相向则认为是主观下线</li>
+<li>如果大多数sentinel都认为实例主观下线，则判定服务下线</li>
+</ul>
+<p>故障转移步骤有哪些？</p>
+<ul>
+<li>首先选定一个slave作为新的master，执行slaveof no one</li>
+<li>然后让所有节点都执行slaveof 新master</li>
+<li>修改故障节点配置，添加slaveof 新master</li>
+</ul>
+<h2 id="RedisTemplate"><a href="#RedisTemplate" class="headerlink" title="RedisTemplate"></a>RedisTemplate</h2><p>在Sentinel集群监管下的Redis主从集群，其节点会因为自动故障转移而发生变化，Redis的客户端必须感知这种变化，及时更新连接信息。Spring的RedisTemplate底层利用lettuce实现了节点的感知和自动切换。</p>
+<p>下面，我们通过一个测试来实现RedisTemplate集成哨兵机制。</p>
+<h4 id="导入Demo工程"><a href="#导入Demo工程" class="headerlink" title="导入Demo工程"></a>导入Demo工程</h4><h4 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h4><p>在项目的pom文件中引入依赖：</p>
+<figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-data-redis<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<h4 id="配置Redis地址"><a href="#配置Redis地址" class="headerlink" title="配置Redis地址"></a>配置Redis地址</h4><p>然后在配置文件application.yml中指定redis的sentinel相关信息：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java">spring:<br>  redis:<br>    sentinel:<br>      master: mymaster<br>      nodes:<br>        - <span class="hljs-number">192.168</span><span class="hljs-number">.150</span><span class="hljs-number">.101</span>:<span class="hljs-number">27001</span><br>        - <span class="hljs-number">192.168</span><span class="hljs-number">.150</span><span class="hljs-number">.101</span>:<span class="hljs-number">27002</span><br>        - <span class="hljs-number">192.168</span><span class="hljs-number">.150</span><span class="hljs-number">.101</span>:<span class="hljs-number">27003</span><br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<h4 id="配置读写分离"><a href="#配置读写分离" class="headerlink" title="配置读写分离"></a>配置读写分离</h4><p>在项目的启动类中，添加一个新的bean：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Bean</span><br><span class="hljs-keyword">public</span> LettuceClientConfigurationBuilderCustomizer <span class="hljs-title function_">clientConfigurationBuilderCustomizer</span><span class="hljs-params">()</span>{<br>    <span class="hljs-keyword">return</span> clientConfigurationBuilder -&gt; clientConfigurationBuilder.readFrom(ReadFrom.REPLICA_PREFERRED);<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<p>这个bean中配置的就是读写策略，包括四种：</p>
+<ul>
+<li>MASTER：从主节点读取</li>
+<li>MASTER_PREFERRED：优先从master节点读取，master不可用才读取replica</li>
+<li>REPLICA：从slave（replica）节点读取</li>
+<li>REPLICA _PREFERRED：优先从slave（replica）节点读取，所有的slave都不可用才读取master</li>
+</ul>
+<h1 id="Redis分片集群"><a href="#Redis分片集群" class="headerlink" title="Redis分片集群"></a>Redis分片集群</h1><h2 id="搭建分片集群"><a href="#搭建分片集群" class="headerlink" title="搭建分片集群"></a>搭建分片集群</h2><p>主从和哨兵可以解决高可用、高并发读的问题。但是依然有两个问题没有解决：</p>
+<ul>
+<li><p>海量数据存储问题</p>
+</li>
+<li><p>高并发写的问题</p>
+</li>
+</ul>
+<p>使用分片集群可以解决上述问题，如图:</p>
+<p><img src="/assets/image-20210725155747294.png" srcset="/img/loading.gif" lazyload alt="image-20210725155747294"></p>
+<p>分片集群特征：</p>
+<ul>
+<li><p>集群中有多个master，每个master保存不同数据</p>
+</li>
+<li><p>每个master都可以有多个slave节点</p>
+</li>
+<li><p>master之间通过ping监测彼此健康状态</p>
+</li>
+<li><p>客户端请求可以访问集群任意节点，最终都会被转发到正确节点</p>
+</li>
+</ul>
+<h2 id="散列插槽"><a href="#散列插槽" class="headerlink" title="散列插槽"></a>散列插槽</h2><h4 id="插槽原理"><a href="#插槽原理" class="headerlink" title="插槽原理"></a>插槽原理</h4><p>Redis会把每一个master节点映射到0~16383共16384个插槽（hash slot）上，查看集群信息时就能看到：</p>
+<p><img src="/assets/image-20210725155820320.png" srcset="/img/loading.gif" lazyload alt="image-20210725155820320"></p>
+<p>数据key不是与节点绑定，而是与插槽绑定。redis会根据key的有效部分计算插槽值，分两种情况：</p>
+<ul>
+<li>key中包含”{}”，且“{}”中至少包含1个字符，“{}”中的部分是有效部分</li>
+<li>key中不包含“{}”，整个key都是有效部分</li>
+</ul>
+<p>例如：key是num，那么就根据num计算，如果是{itcast}num，则根据itcast计算。计算方式是利用CRC16算法得到一个hash值，然后对16384取余，得到的结果就是slot值。</p>
+<p><img src="/assets/image-20210725155850200.png" srcset="/img/loading.gif" lazyload alt="image-20210725155850200"> </p>
+<p>如图，在7001这个节点执行set a 1时，对a做hash运算，对16384取余，得到的结果是15495，因此要存储到103节点。</p>
+<p>到了7003后，执行<code>get num</code>时，对num做hash运算，对16384取余，得到的结果是2765，因此需要切换到7001节点</p>
+<h4 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h4><p>Redis如何判断某个key应该在哪个实例？</p>
+<ul>
+<li>将16384个插槽分配到不同的实例</li>
+<li>根据key的有效部分计算哈希值，对16384取余</li>
+<li>余数作为插槽，寻找插槽所在实例即可</li>
+</ul>
+<p>如何将同一类数据固定的保存在同一个Redis实例？</p>
+<ul>
+<li>这一类数据使用相同的有效部分，例如key都以{typeId}为前缀</li>
+</ul>
+<h2 id="集群伸缩"><a href="#集群伸缩" class="headerlink" title="集群伸缩"></a>集群伸缩</h2><p>redis-cli –cluster提供了很多操作集群的命令，可以通过下面方式查看：</p>
+<p><img src="/assets/image-20210725160138290.png" srcset="/img/loading.gif" lazyload alt="image-20210725160138290"></p>
+<p>比如，添加节点的命令：</p>
+<p><img src="/assets/image-20210725160448139.png" srcset="/img/loading.gif" lazyload alt="image-20210725160448139"></p>
+<h4 id="需求分析"><a href="#需求分析" class="headerlink" title="需求分析"></a>需求分析</h4><p>需求：向集群中添加一个新的master节点，并向其中存储 num = 10</p>
+<ul>
+<li>启动一个新的redis实例，端口为7004</li>
+<li>添加7004到之前的集群，并作为一个master节点</li>
+<li>给7004节点分配插槽，使得num这个key可以存储到7004实例</li>
+</ul>
+<p>这里需要两个新的功能：</p>
+<ul>
+<li>添加一个节点到集群中</li>
+<li>将部分插槽分配到新插槽</li>
+</ul>
+<h4 id="创建新的redis实例"><a href="#创建新的redis实例" class="headerlink" title="创建新的redis实例"></a>创建新的redis实例</h4><p>创建一个文件夹：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">mkdir</span> 7004<br></code></pre></td></tr></tbody></table></figure>
+
+<p>拷贝配置文件：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">cp</span> redis.conf /7004<br></code></pre></td></tr></tbody></table></figure>
+
+<p>修改配置文件：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">sed /s/6379/7004/g 7004/redis.conf<br></code></pre></td></tr></tbody></table></figure>
+
+<p>启动</p>
+<figure class="highlight sh"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">redis-server 7004/redis.conf<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<h4 id="添加新节点到redis"><a href="#添加新节点到redis" class="headerlink" title="添加新节点到redis"></a>添加新节点到redis</h4><p>添加节点的语法如下：</p>
+<p><img src="/assets/image-20210725160448139.png" srcset="/img/loading.gif" lazyload alt="image-20210725160448139"></p>
+<p>执行命令：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">redis-cli --cluster add-node  192.168.150.101:7004 192.168.150.101:7001<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<p>通过命令查看集群状态：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">redis-cli -p 7001 cluster nodes<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<p>如图，7004加入了集群，并且默认是一个master节点：</p>
+<p><img src="/assets/image-20210725161007099.png" srcset="/img/loading.gif" lazyload alt="image-20210725161007099"></p>
+<p>但是，可以看到7004节点的插槽数量为0，因此没有任何数据可以存储到7004上</p>
+<h4 id="转移插槽"><a href="#转移插槽" class="headerlink" title="转移插槽"></a>转移插槽</h4><p>我们要将num存储到7004节点，因此需要先看看num的插槽是多少：</p>
+<p><img src="/assets/image-20210725161241793.png" srcset="/img/loading.gif" lazyload alt="image-20210725161241793"></p>
+<p>如上图所示，num的插槽为2765.</p>
+<p>我们可以将0~3000的插槽从7001转移到7004，命令格式如下：</p>
+<p><img src="/assets/image-20210725161401925.png" srcset="/img/loading.gif" lazyload alt="image-20210725161401925"></p>
+<p>具体命令如下：</p>
+<p>建立连接：</p>
+<p><img src="/assets/image-20210725161506241.png" srcset="/img/loading.gif" lazyload alt="image-20210725161506241"></p>
+<p>得到下面的反馈：</p>
+<p><img src="/assets/image-20210725161540841.png" srcset="/img/loading.gif" lazyload alt="image-20210725161540841"></p>
+<p>询问要移动多少个插槽，我们计划是3000个：</p>
+<p>新的问题来了：</p>
+<p><img src="/assets/image-20210725161637152.png" srcset="/img/loading.gif" lazyload alt="image-20210725161637152"></p>
+<p>那个node来接收这些插槽？？</p>
+<p>显然是7004，那么7004节点的id是多少呢？</p>
+<p><img src="/assets/image-20210725161731738.png" srcset="/img/loading.gif" lazyload alt="image-20210725161731738"></p>
+<p>复制这个id，然后拷贝到刚才的控制台后：</p>
+<p><img src="/assets/image-20210725161817642.png" srcset="/img/loading.gif" lazyload alt="image-20210725161817642"></p>
+<p>这里询问，你的插槽是从哪里移动过来的？</p>
+<ul>
+<li>all：代表全部，也就是三个节点各转移一部分</li>
+<li>具体的id：目标节点的id</li>
+<li>done：没有了</li>
+</ul>
+<p>这里我们要从7001获取，因此填写7001的id：</p>
+<p><img src="/assets/image-20210725162030478.png" srcset="/img/loading.gif" lazyload alt="image-20210725162030478"></p>
+<p>填完后，点击done，这样插槽转移就准备好了：</p>
+<p><img src="/assets/image-20210725162101228.png" srcset="/img/loading.gif" lazyload alt="image-20210725162101228"></p>
+<p>确认要转移吗？输入yes：</p>
+<p>然后，通过命令查看结果：</p>
+<p><img src="/assets/image-20210725162145497.png" srcset="/img/loading.gif" lazyload alt="image-20210725162145497"> </p>
+<p>可以看到： </p>
+<p><img src="/assets/image-20210725162224058.png" srcset="/img/loading.gif" lazyload alt="image-20210725162224058"></p>
+<p>目的达成。</p>
+<h2 id="故障转移"><a href="#故障转移" class="headerlink" title="故障转移"></a>故障转移</h2><p>集群初识状态是这样的：</p>
+<p><img src="/assets/image-20210727161152065.png" srcset="/img/loading.gif" lazyload alt="image-20210727161152065"></p>
+<p>其中7001、7002、7003都是master，我们计划让7002宕机。</p>
+<h4 id="自动故障转移"><a href="#自动故障转移" class="headerlink" title="自动故障转移"></a>自动故障转移</h4><p>当集群中有一个master宕机会发生什么呢？</p>
+<p>直接停止一个redis实例，例如7002：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">redis-cli -p 7002 shutdown<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<p>1）首先是该实例与其它实例失去连接</p>
+<p>2）然后是疑似宕机：</p>
+<p><img src="/assets/image-20210725162319490.png" srcset="/img/loading.gif" lazyload alt="image-20210725162319490"></p>
+<p>3）最后是确定下线，自动提升一个slave为新的master：</p>
+<p><img src="/assets/image-20210725162408979.png" srcset="/img/loading.gif" lazyload alt="image-20210725162408979"></p>
+<p>4）当7002再次启动，就会变为一个slave节点了：</p>
+<p><img src="/assets/image-20210727160803386.png" srcset="/img/loading.gif" lazyload alt="image-20210727160803386"></p>
+<h4 id="手动故障转移"><a href="#手动故障转移" class="headerlink" title="手动故障转移"></a>手动故障转移</h4><p>利用cluster failover命令可以手动让集群中的某个master宕机，切换到执行cluster failover命令的这个slave节点，实现无感知的数据迁移。其流程如下：</p>
+<p><img src="/assets/image-20210725162441407.png" srcset="/img/loading.gif" lazyload alt="image-20210725162441407"></p>
+<p>这种failover命令可以指定三种模式：</p>
+<ul>
+<li>缺省：默认的流程，如图1~6歩</li>
+<li>force：省略了对offset的一致性校验</li>
+<li>takeover：直接执行第5歩，忽略数据一致性、忽略master状态和其它master的意见</li>
+</ul>
+<p><strong>案例需求</strong>：在7002这个slave节点执行手动故障转移，重新夺回master地位</p>
+<p>步骤如下：</p>
+<p>1）利用redis-cli连接7002这个节点</p>
+<p>2）执行cluster failover命令</p>
+<p>如图：</p>
+<p><img src="/assets/image-20210727160037766.png" srcset="/img/loading.gif" lazyload alt="image-20210727160037766"></p>
+<p>效果：</p>
+<p><img src="/assets/image-20210727161152065.png" srcset="/img/loading.gif" lazyload alt="image-20210727161152065"></p>
+<h2 id="RedisTemplate访问分片集群"><a href="#RedisTemplate访问分片集群" class="headerlink" title="RedisTemplate访问分片集群"></a>RedisTemplate访问分片集群</h2><p>RedisTemplate底层同样基于lettuce实现了分片集群的支持，而使用的步骤与哨兵模式基本一致：</p>
+<p>1）引入redis的starter依赖</p>
+<p>2）配置分片集群地址</p>
+<p>3）配置读写分离</p>
+<p>与哨兵模式相比，其中只有分片集群的配置方式略有差异，如下：</p>
+<figure class="highlight yaml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">redis:</span><br>    <span class="hljs-attr">cluster:</span><br>      <span class="hljs-attr">nodes:</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-number">192.168</span><span class="hljs-number">.150</span><span class="hljs-number">.101</span><span class="hljs-string">:7001</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-number">192.168</span><span class="hljs-number">.150</span><span class="hljs-number">.101</span><span class="hljs-string">:7002</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-number">192.168</span><span class="hljs-number">.150</span><span class="hljs-number">.101</span><span class="hljs-string">:7003</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-number">192.168</span><span class="hljs-number">.150</span><span class="hljs-number">.101</span><span class="hljs-string">:8001</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-number">192.168</span><span class="hljs-number">.150</span><span class="hljs-number">.101</span><span class="hljs-string">:8002</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-number">192.168</span><span class="hljs-number">.150</span><span class="hljs-number">.101</span><span class="hljs-string">:8003</span><br></code></pre></td></tr></tbody></table></figure>
+
+
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%A1%86%E6%9E%B6/" class="category-chain-item">技术框架</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%8A%80%E6%9C%AF%E6%A1%86%E6%9E%B6/">#技术框架</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/12/01/%E7%AC%94%E8%AE%B0/%E6%8A%80%E6%9C%AF2/RabbitMQ-%E9%AB%98%E7%BA%A7%E7%AF%87/" title="服务异步通信">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">服务异步通信</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/11/14/%E7%AC%94%E8%AE%B0/%E6%8A%80%E6%9C%AF2/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%981/" title="分布式缓存 持久化&amp;主从">
+                        <span class="hidden-mobile">分布式缓存 持久化&amp;主从</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a><span>晴天</span></a> <i class="iconfont icon-love"></i> <a><span>晚风</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
