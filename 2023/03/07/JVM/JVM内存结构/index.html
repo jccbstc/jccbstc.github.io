@@ -1,0 +1,768 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/logo/h1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="及川彻">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="JVM内存结构 程序计数器1）定义Program Counter Register 程序计数器（寄存器）作用：是记录下一条 jvm 指令的执行地址行号。特点：  是线程私有的 不会存在内存溢出  2）作用 解释器会解释指令为机器码交给 cpu 执行，程序计数器会记录下一条指令的地址行号，这样下一次解释器会从程序计数器拿到指令然后进行解释执行。 多线程的环境下，如果两个线程发生了上下文切换，那么程序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM内存结构">
+<meta property="og:url" content="http://example.com/2023/03/07/JVM/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/index.html">
+<meta property="og:site_name" content="业余的日落患者">
+<meta property="og:description" content="JVM内存结构 程序计数器1）定义Program Counter Register 程序计数器（寄存器）作用：是记录下一条 jvm 指令的执行地址行号。特点：  是线程私有的 不会存在内存溢出  2）作用 解释器会解释指令为机器码交给 cpu 执行，程序计数器会记录下一条指令的地址行号，这样下一次解释器会从程序计数器拿到指令然后进行解释执行。 多线程的环境下，如果两个线程发生了上下文切换，那么程序">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image/v2-7a7c516c0aeb622705c86fd9b5e8c44a_720w.webp">
+<meta property="og:image" content="http://example.com/image/20210208112903305.png">
+<meta property="og:image" content="http://example.com/image/20210208124448238.png">
+<meta property="og:image" content="http://example.com/image/20210208124525875.png">
+<meta property="og:image" content="http://example.com/image/20210208180041113.png">
+<meta property="og:image" content="http://example.com/image/20210208181022863.png">
+<meta property="article:published_time" content="2023-03-07T12:51:50.993Z">
+<meta property="article:modified_time" content="2023-03-08T06:46:38.934Z">
+<meta property="article:author" content="及川彻">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/image/v2-7a7c516c0aeb622705c86fd9b5e8c44a_720w.webp">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>JVM内存结构 - 业余的日落患者</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="业余的日落患者" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>晴天与晚风</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="JVM内存结构"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-07 20:51" pubdate>
+          2023年3月7日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          35 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">JVM内存结构</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="JVM内存结构"><a href="#JVM内存结构" class="headerlink" title="JVM内存结构"></a>JVM内存结构</h1><p><img src="/image/v2-7a7c516c0aeb622705c86fd9b5e8c44a_720w.webp" srcset="/img/loading.gif" lazyload></p>
+<h2 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h2><h4 id="1）定义"><a href="#1）定义" class="headerlink" title="1）定义"></a>1）定义</h4><p>Program Counter Register 程序计数器（寄存器）<br>作用：是记录下一条 jvm 指令的执行地址行号。<br>特点：</p>
+<ul>
+<li>是线程私有的</li>
+<li>不会存在内存溢出</li>
+</ul>
+<h4 id="2）作用"><a href="#2）作用" class="headerlink" title="2）作用"></a>2）作用</h4><ul>
+<li>解释器会解释指令为机器码交给 cpu 执行，程序计数器会记录下一条指令的地址行号，这样下一次解释器会从程序计数器拿到指令然后进行解释执行。</li>
+<li>多线程的环境下，如果两个线程发生了上下文切换，那么程序计数器会记录线程下一行指令的地址行号，以便于接着往下执行。</li>
+</ul>
+<h2 id="虚拟机栈"><a href="#虚拟机栈" class="headerlink" title="虚拟机栈"></a>虚拟机栈</h2><h4 id="1）定义-1"><a href="#1）定义-1" class="headerlink" title="1）定义"></a>1）定义</h4><ul>
+<li>每个线程运行需要的内存空间，称为虚拟机栈</li>
+<li>每个栈由多个栈帧（Frame）组成，对应着每次调用方法时所占用的内存</li>
+<li>每个线程只能有一个活动栈帧，对应着当前正在执行的方法</li>
+</ul>
+<h5 id="垃圾回收是否涉及栈内存？"><a href="#垃圾回收是否涉及栈内存？" class="headerlink" title="垃圾回收是否涉及栈内存？"></a>垃圾回收是否涉及栈内存？</h5><p>不会。栈内存是方法调用产生的，方法调用结束后会弹出栈。</p>
+<h5 id="栈内存分配越大越好吗？"><a href="#栈内存分配越大越好吗？" class="headerlink" title="栈内存分配越大越好吗？"></a>栈内存分配越大越好吗？</h5><p>不是。因为物理内存是一定的，栈内存越大，可以支持更多的递归调用，但是可执行的线程数就会越少。</p>
+<h5 id="方法呢的局部变量是否线程安全"><a href="#方法呢的局部变量是否线程安全" class="headerlink" title="方法呢的局部变量是否线程安全"></a>方法呢的局部变量是否线程安全</h5><p>如果方法内部的变量没有逃离方法的作用访问，它是线程安全的<br>如果是局部变量引用了对象，并逃离了方法的访问，那就要考虑线程安全问题。</p>
+<h4 id="2）栈内存溢出"><a href="#2）栈内存溢出" class="headerlink" title="2）栈内存溢出"></a>2）栈内存溢出</h4><p>栈帧过大、过多、或者第三方类库操作，都有可能造成栈内存溢出 java.lang.stackOverflowError ，使用 -Xss256k 指定栈内存大小！</p>
+<h4 id="3）线程运行诊断"><a href="#3）线程运行诊断" class="headerlink" title="3）线程运行诊断"></a>3）线程运行诊断</h4><p>案例一：cpu 占用过多<br>解决方法：Linux 环境下运行某些程序的时候，可能导致 CPU 的占用过高，这时需要定位占用 CPU 过高的线程</p>
+<p>top 命令，查看是哪个进程占用 CPU 过高<br>ps H -eo pid, tid（线程id）, %cpu | grep 刚才通过 top 查到的进程号 通过 ps 命令进一步查看是哪个线程占用 CPU 过高<br>jstack 进程 id 通过查看进程中的线程的 nid ，刚才通过 ps 命令看到的 tid 来对比定位，注意 jstack 查找出的线程 id 是 16 进制的，需要转换。</p>
+<h2 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h2><p>一些带有 native 关键字的方法就是需要 JAVA 去调用本地的C或者C++方法，因为 JAVA 有时候没法直接和操作系统底层交互，所以需要用到本地方法栈，服务于带 native 关键字的方法。</p>
+<h2 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h2><h4 id="1）定义-2"><a href="#1）定义-2" class="headerlink" title="1）定义"></a>1）定义</h4><p>Heap 堆</p>
+<ul>
+<li>通过new关键字创建的对象都会被放在堆内存</li>
+</ul>
+<p>特点</p>
+<ul>
+<li>它是线程共享，堆内存中的对象都需要考虑线程安全问题</li>
+<li>有垃圾回收机制</li>
+</ul>
+<h4 id="2）堆内存溢出"><a href="#2）堆内存溢出" class="headerlink" title="2）堆内存溢出"></a>2）堆内存溢出</h4><p>java.lang.OutofMemoryError ：java heap space. 堆内存溢出<br>可以使用 -Xmx8m 来指定堆内存大小。</p>
+<h4 id="2）堆内存诊断"><a href="#2）堆内存诊断" class="headerlink" title="2）堆内存诊断"></a>2）堆内存诊断</h4><ol>
+<li>jps 工具<br>查看当前系统中有哪些 java 进程</li>
+<li>jmap 工具<br>查看堆内存占用情况 jmap - heap 进程id</li>
+<li>jconsole 工具<br>图形界面的，多功能的监测工具，可以连续监测</li>
+<li>jvisualvm 工具</li>
+</ol>
+<h2 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h2><h4 id="1）定义-3"><a href="#1）定义-3" class="headerlink" title="1）定义"></a>1）定义</h4><p>Java 虚拟机有一个在所有 Java 虚拟机线程之间共享的方法区域。方法区域类似于用于传统语言的编译代码的存储区域，或者类似于操作系统进程中的“文本”段。它存储每个类的结构，例如运行时常量池、字段和方法数据，以及方法和构造函数的代码，包括特殊方法，用于类和实例初始化以及接口初始化方法区域是在虚拟机启动时创建的。尽管方法区域在逻辑上是堆的一部分，但简单的实现可能不会选择垃圾收集或压缩它。此规范不强制指定方法区的位置或用于管理已编译代码的策略。方法区域可以具有固定的大小，或者可以根据计算的需要进行扩展，并且如果不需要更大的方法区域，则可以收缩。方法区域的内存不需要是连续的！</p>
+<h4 id="2）组成"><a href="#2）组成" class="headerlink" title="2）组成"></a>2）组成</h4><p>Hotspot 虚拟机 jdk1.6 1.7 1.8 内存结构图</p>
+<p><img src="/image/20210208112903305.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="3）方法区内存溢出"><a href="#3）方法区内存溢出" class="headerlink" title="3）方法区内存溢出"></a>3）方法区内存溢出</h4><ul>
+<li>1.8 之前会导致永久代内存溢出<ul>
+<li>使用 -XX:MaxPermSize=8m 指定永久代内存大小</li>
+</ul>
+</li>
+<li>1.8 之后会导致元空间内存溢出<ul>
+<li>使用 -XX:MaxMetaspaceSize=8m 指定元空间大小</li>
+</ul>
+</li>
+</ul>
+<h4 id="4）运行时常量池"><a href="#4）运行时常量池" class="headerlink" title="4）运行时常量池"></a>4）运行时常量池</h4><p>二进制字节码包含（类的基本信息，常量池，类方法定义，包含了虚拟机的指令）<br>首先看看常量池是什么，编译如下代码：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Test</span> {<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> {<br>        System.out.println(<span class="hljs-string">"Hello World!"</span>);<br>    }<br><br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>然后使用 javap -v Test.class 命令反编译查看结果。</p>
+<p><img src="/image/20210208124448238.png" srcset="/img/loading.gif" lazyload></p>
+<p>每条指令都会对应常量池表中一个地址，常量池表中的地址可能对应着一个类名、方法名、参数类型等信息。</p>
+<p><img src="/image/20210208124525875.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>常量池</strong>：<br>就是一张表，虚拟机指令根据这张常量表找到要执行的类名、方法名、参数类型、字面量信息<br><strong>运行时常量池</strong>：<br>常量池是 *.class 文件中的，当该类被加载以后，它的常量池信息就会放入运行时常量池，并把里面的符号地址变为真实地址</p>
+<h4 id="5）StringTable"><a href="#5）StringTable" class="headerlink" title="5）StringTable"></a>5）StringTable</h4><ul>
+<li>常量池中的字符串仅是符号，只有在被用到时才会转化为对象</li>
+<li>利用串池的机制，来避免重复创建字符串对象</li>
+<li>字符串变量拼接的原理是StringBuilder</li>
+<li>字符串常量拼接的原理是编译器优化</li>
+<li>可以使用intern方法，主动将串池中还没有的字符串对象放入串池中</li>
+</ul>
+<p><strong>intern方法 1.8</strong><br>调用字符串对象的 intern 方法，会将该字符串对象尝试放入到串池中</p>
+<ul>
+<li>如果串池中没有该字符串对象，则放入成功</li>
+<li>如果有该字符串对象，则放入失败<br>无论放入是否成功，都会返回串池中的字符串对象</li>
+</ul>
+<p>注意：此时如果调用 intern 方法成功，堆内存与串池中的字符串对象是同一个对象；如果失败，则不是同一个对象</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">StringTable</span> {<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> {<br>        <span class="hljs-type">String</span> <span class="hljs-variable">s1</span> <span class="hljs-operator">=</span> <span class="hljs-string">"a"</span>;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">s2</span> <span class="hljs-operator">=</span> <span class="hljs-string">"b"</span>;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">s3</span> <span class="hljs-operator">=</span> s1 + s2;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">s4</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(<span class="hljs-string">"a"</span>) + <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(<span class="hljs-string">"b"</span>);<br>        <span class="hljs-type">String</span> <span class="hljs-variable">s5</span> <span class="hljs-operator">=</span> <span class="hljs-string">"ab"</span>;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">s6</span> <span class="hljs-operator">=</span> s3.intern();<br>        System.out.println(s3 == s4); <span class="hljs-comment">// false</span><br>        System.out.println(s5 == s3); <span class="hljs-comment">// false</span><br>        System.out.println(s6 == s5); <span class="hljs-comment">// true</span><br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Main</span> {<br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> {<br>		<span class="hljs-comment">// "a" "b" 被放入串池中，str 则存在于堆内存之中</span><br>		<span class="hljs-type">String</span> <span class="hljs-variable">str</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(<span class="hljs-string">"a"</span>) + <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(<span class="hljs-string">"b"</span>);<br>		<span class="hljs-comment">// 调用 str 的 intern 方法，这时串池中没有 "ab" ，则会将该字符串对象放入到串池中，此时堆内存与串池中的 "ab" 是同一个对象</span><br>		<span class="hljs-type">String</span> <span class="hljs-variable">st2</span> <span class="hljs-operator">=</span> str.intern();<br>		<span class="hljs-comment">// 给 str3 赋值，因为此时串池中已有 "ab" ，则直接将串池中的内容返回</span><br>		<span class="hljs-type">String</span> <span class="hljs-variable">str3</span> <span class="hljs-operator">=</span> <span class="hljs-string">"ab"</span>;<br>		<span class="hljs-comment">// 因为堆内存与串池中的 "ab" 是同一个对象，所以以下两条语句打印的都为 true</span><br>		System.out.println(str == st2); <span class="hljs-comment">// true</span><br>		System.out.println(str == str3); <span class="hljs-comment">// true</span><br>	}<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Main</span> {<br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> {<br>        <span class="hljs-comment">// 此处创建字符串对象 "ab" ，因为串池中还没有 "ab" ，所以将其放入串池中</span><br>		<span class="hljs-type">String</span> <span class="hljs-variable">str3</span> <span class="hljs-operator">=</span> <span class="hljs-string">"ab"</span>;<br>        <span class="hljs-comment">// "a" "b" 被放入串池中，str 则存在于堆内存之中</span><br>		<span class="hljs-type">String</span> <span class="hljs-variable">str</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(<span class="hljs-string">"a"</span>) + <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(<span class="hljs-string">"b"</span>);<br>        <span class="hljs-comment">// 此时因为在创建 str3 时，"ab" 已存在与串池中，所以放入失败，但是会返回串池中的 "ab" </span><br>		<span class="hljs-type">String</span> <span class="hljs-variable">str2</span> <span class="hljs-operator">=</span> str.intern();<br>		System.out.println(str == str2); <span class="hljs-comment">// false</span><br>		System.out.println(str == str3); <span class="hljs-comment">// false</span><br>		System.out.println(str2 == str3); <span class="hljs-comment">// true</span><br>	}<br>}<br><br></code></pre></td></tr></tbody></table></figure>
+
+
+
+
+
+<h4 id="6）StringTable-的位置"><a href="#6）StringTable-的位置" class="headerlink" title="6）StringTable 的位置"></a>6）StringTable 的位置</h4><p>jdk1.6 StringTable 位置是在永久代中，1.8 StringTable 位置是在堆中。</p>
+<h4 id="7）StringTable-垃圾回收"><a href="#7）StringTable-垃圾回收" class="headerlink" title="7）StringTable 垃圾回收"></a>7）StringTable 垃圾回收</h4><p>-Xmx10m 指定堆内存大小<br>-XX:+PrintStringTableStatistics 打印字符串常量池信息<br>-XX:+PrintGCDetails<br>-verbose:gc 打印 gc 的次数，耗费时间等信息</p>
+<h4 id="8）StringTable-性能调优"><a href="#8）StringTable-性能调优" class="headerlink" title="8）StringTable 性能调优"></a>8）StringTable 性能调优</h4><ul>
+<li>因为StringTable是由HashTable实现的，所以可以适当增加HashTable桶的个数，来减少字符串放入串池所需要的时间</li>
+</ul>
+<figure class="highlight routeros"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">-XX:<span class="hljs-attribute">StringTableSize</span>=桶个数（最少设置为 1009 以上）<br></code></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>考虑是否需要将字符串对象入池<br>可以通过 intern 方法减少重复入池</li>
+</ul>
+<h2 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h2><h4 id="1）定义-4"><a href="#1）定义-4" class="headerlink" title="1）定义"></a>1）定义</h4><p>Direct Memory</p>
+<ul>
+<li>常见于 NIO 操作时，用于数据缓冲区</li>
+<li>分配回收成本较高，但读写性能高</li>
+<li>不受 JVM 内存回收管理</li>
+</ul>
+<h4 id="2）使用直接内存的好处"><a href="#2）使用直接内存的好处" class="headerlink" title="2）使用直接内存的好处"></a>2）使用直接内存的好处</h4><p>文件读写流程：</p>
+<p><img src="/image/20210208180041113.png" srcset="/img/loading.gif" lazyload></p>
+<p>因为 java 不能直接操作文件管理，需要切换到内核态，使用本地方法进行操作，然后读取磁盘文件，会在系统内存中创建一个缓冲区，将数据读到系统缓冲区， 然后在将系统缓冲区数据，复制到 java 堆内存中。缺点是数据存储了两份，在系统内存中有一份，java 堆中有一份，造成了不必要的复制。</p>
+<p><strong>使用了 DirectBuffer 文件读取流程</strong></p>
+<p><img src="/image/20210208181022863.png" srcset="/img/loading.gif" lazyload></p>
+<p>直接内存是操作系统和 Java 代码都可以访问的一块区域，无需将代码从系统内存复制到 Java 堆内存，从而提高了效率。</p>
+<h4 id="3）直接内存的回收机制总结"><a href="#3）直接内存的回收机制总结" class="headerlink" title="3）直接内存的回收机制总结"></a>3）直接内存的回收机制总结</h4><ul>
+<li><p>使用了 Unsafe 类来完成直接内存的分配回收，回收需要主动调用freeMemory 方法</p>
+</li>
+<li><p>ByteBuffer 的实现内部使用了 Cleaner（虚引用）来检测 ByteBuffer 。一旦ByteBuffer 被垃圾回收，那么会由 ReferenceHandler（守护线程） 来调用 Cleaner 的 clean 方法调用 freeMemory 来释放内存</p>
+</li>
+</ul>
+<p><strong>注意：</strong></p>
+<p>一般用 jvm 调优时，会加上下面的参数：</p>
+<figure class="highlight awk"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">-XX:+DisableExplicitGC  <span class="hljs-regexp">//</span> 静止显示的 GC<br></code></pre></td></tr></tbody></table></figure>
+
+<p>意思就是禁止我们手动的 GC，比如手动 System.gc() 无效，它是一种 full gc，会回收新生代、老年代，会造成程序执行的时间比较长。所以我们就通过 unsafe 对象调用 freeMemory 的方式释放内存。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JVM/" class="category-chain-item">JVM</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/JVM/">#JVM</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/03/08/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%AD%BB%E9%94%81%E5%AE%9A%E4%B9%89%E5%8F%8A%E5%8F%91%E7%94%9F%E7%9A%84%E6%9D%A1%E4%BB%B6/" title="死锁定义及发生的条件">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">死锁定义及发生的条件</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/03/06/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BF%9B%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F/" title="进程间的通信方式">
+                        <span class="hidden-mobile">进程间的通信方式</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a><span>晴天</span></a> <i class="iconfont icon-love"></i> <a><span>晚风</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
