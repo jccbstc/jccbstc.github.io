@@ -1,0 +1,781 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/logo/h1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="及川彻">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="点我达2019届校招Java开发笔试1.统计各部门平均年龄，其中三部门人员平均年龄分别为38岁、24岁、42岁。A和B 两部门人员平均年龄为30岁，B和C两部门人员平均年龄为34岁。这三个部门全体人员的平均年龄为多少岁？A. 34 B. 35 C. 36 D. 37 正确答案：B 本题考查计算中的平均数。依题设A部门x人,B部门y人, C部门z人，根据“A和B两部门人员平均年龄为30岁”可得：38">
+<meta property="og:type" content="article">
+<meta property="og:title" content="点我达2019届校招Java开发笔试">
+<meta property="og:url" content="http://example.com/2023/03/21/%E7%AC%94%E8%AF%95/%E7%82%B9%E6%88%91%E8%BE%BE2019%E5%B1%8A%E6%A0%A1%E6%8B%9BJava%E5%BC%80%E5%8F%91%E7%AC%94%E8%AF%95/index.html">
+<meta property="og:site_name" content="业余的日落患者">
+<meta property="og:description" content="点我达2019届校招Java开发笔试1.统计各部门平均年龄，其中三部门人员平均年龄分别为38岁、24岁、42岁。A和B 两部门人员平均年龄为30岁，B和C两部门人员平均年龄为34岁。这三个部门全体人员的平均年龄为多少岁？A. 34 B. 35 C. 36 D. 37 正确答案：B 本题考查计算中的平均数。依题设A部门x人,B部门y人, C部门z人，根据“A和B两部门人员平均年龄为30岁”可得：38">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/dwd.png">
+<meta property="article:published_time" content="2023-03-21T11:14:07.098Z">
+<meta property="article:modified_time" content="2023-03-21T11:25:00.566Z">
+<meta property="article:author" content="及川彻">
+<meta property="article:tag" content="排序算法">
+<meta property="article:tag" content="基础">
+<meta property="article:tag" content="智力题">
+<meta property="article:tag" content="红黑树">
+<meta property="article:tag" content="b+数">
+<meta property="article:tag" content="二分查找">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="银行家算法">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/dwd.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>点我达2019届校招Java开发笔试 - 业余的日落患者</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="业余的日落患者" type="application/atom+xml">
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>晴天与晚风</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/dwd.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="点我达2019届校招Java开发笔试"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-21 19:14" pubdate>
+          2023年3月21日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          35 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">点我达2019届校招Java开发笔试</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="点我达2019届校招Java开发笔试"><a href="#点我达2019届校招Java开发笔试" class="headerlink" title="点我达2019届校招Java开发笔试"></a>点我达2019届校招Java开发笔试</h1><h5 id="1-统计各部门平均年龄，其中三部门人员平均年龄分别为38岁、24岁、42岁。A和B-两部门人员平均年龄为30岁，B和C两部门人员平均年龄为34岁。这三个部门全体人员的平均年龄为多少岁？"><a href="#1-统计各部门平均年龄，其中三部门人员平均年龄分别为38岁、24岁、42岁。A和B-两部门人员平均年龄为30岁，B和C两部门人员平均年龄为34岁。这三个部门全体人员的平均年龄为多少岁？" class="headerlink" title="1.统计各部门平均年龄，其中三部门人员平均年龄分别为38岁、24岁、42岁。A和B 两部门人员平均年龄为30岁，B和C两部门人员平均年龄为34岁。这三个部门全体人员的平均年龄为多少岁？"></a>1.统计各部门平均年龄，其中三部门人员平均年龄分别为38岁、24岁、42岁。A和B 两部门人员平均年龄为30岁，B和C两部门人员平均年龄为34岁。这三个部门全体人员的平均年龄为多少岁？</h5><p>A. 34</p>
+<p>B. 35</p>
+<p>C. 36</p>
+<p>D. 37</p>
+<p>正确答案：B</p>
+<p>本题考查计算中的平均数。依题设A部门x人,B部门y人, C部门z人，根据“A和B两部门人员平均年龄为30岁”可得：38x+24y=30(x+y)，求得x：y=3：4，x=0.75y;又根据“B和C两部门人员平均年龄为34岁”可得：24y+42z=34(y+z)，求得y：z=4：5，那么，x：y：z=3：4：5，那么设三者人数分别是3a、4a、5a，部门总人数=12a，平均年龄=(38×3a + 24×4a + 42×5a)÷12a，利用尾数法可知，括号内各项相加后尾数为0，只有35乘以12尾数为0。</p>
+<hr>
+<h5 id="2-以下数据结构的说法，错误的是"><a href="#2-以下数据结构的说法，错误的是" class="headerlink" title="2.以下数据结构的说法，错误的是"></a>2.以下数据结构的说法，错误的是</h5><p>A. 红黑树插入操作的平均时间复杂度为O(logn)，最坏时间复杂度为O(logn)</p>
+<p>B. B+树插入操作的平均时间复杂度为O(logn)，最坏时间复杂度为O(logn)</p>
+<p>C. Hash表插入操作的平均时间复杂度为O(logn)，最坏时间复杂度为O(n)</p>
+<p>D. 排序链表插入操作的平均时间复杂度为O(n)，最坏时间复杂度为O(n)</p>
+<p>正确答案：C</p>
+<p><img src="/image/105_1411202746369_3.png" srcset="/img/loading.gif" lazyload></p>
+<p>哈希表插入的时间复杂度与冲突次数有关，O(冲突次数/n)，最好的情况冲突次数为0,直接插入，时间复杂度为O(1)。最坏情况是所有值对应同一个键值，这是冲突次数最多，为0+1+2+3+4+…+(n-1)=n*(n-1)/2,平均比较次数为(n-1)/2,时间复杂度为O(n)</p>
+<hr>
+<h5 id="3-用直接插入排序方法对下面4个序列进行排序-由小到大-元素比较次数最少的是"><a href="#3-用直接插入排序方法对下面4个序列进行排序-由小到大-元素比较次数最少的是" class="headerlink" title="3.用直接插入排序方法对下面4个序列进行排序(由小到大),元素比较次数最少的是"></a>3.用直接插入排序方法对下面4个序列进行排序(由小到大),元素比较次数最少的是</h5><p>A. 88,95,12,88,21,54,23,79</p>
+<p>B. 95,21,79,88,54,23,39,12</p>
+<p>C. 39,54,21,79,88,23,95,12</p>
+<p>D. 12,21,23,39,79,54,88,95</p>
+<p>正确答案：D</p>
+<p>逆序越少的序列，在 直接插入排序 中比较次数是越少的</p>
+<hr>
+<h5 id="4-三个进程A，B，C。单核CPU执行时，需要以下资源。其中优先级高的进程可以抢占CPU资源但不能抢占IO资源。所有任务执行完毕时候，需要多长时间？"><a href="#4-三个进程A，B，C。单核CPU执行时，需要以下资源。其中优先级高的进程可以抢占CPU资源但不能抢占IO资源。所有任务执行完毕时候，需要多长时间？" class="headerlink" title="4.三个进程A，B，C。单核CPU执行时，需要以下资源。其中优先级高的进程可以抢占CPU资源但不能抢占IO资源。所有任务执行完毕时候，需要多长时间？"></a>4.三个进程A，B，C。单核CPU执行时，需要以下资源。其中优先级高的进程可以抢占CPU资源但不能抢占IO资源。所有任务执行完毕时候，需要多长时间？</h5><p><img src="/image/Snipaste_2023-03-21_17-58-02.png" srcset="/img/loading.gif" lazyload></p>
+<p>A. 170ms</p>
+<p>B. 200ms</p>
+<p>C. 240ms</p>
+<p>D. 270ms</p>
+<p>正确答案：B</p>
+<p><img src="/image/1328940_1521735302471_425DB0E95E3B0B63D006DBDB55AA7538.png" srcset="/img/loading.gif" lazyload>优先级：A&gt;B&gt;C </p>
+<p>  A先I/O后CPU，这时候CPU是空闲的。B先CPU后I/O，C先CPU后I/O，B的优先级比C高，B先进行CPU操作； </p>
+<p>  B执行完CPU操作以后A还在进行I/O操作，这时候C进行CPU操作，B等A的I/O执行完以后再进行操作； </p>
+<p>  C执行完CPU操作以后，A还没执行完I/O操作，C也等着； </p>
+<p>  A执行完I/O操作以后，B比C的优先级高，B进行I/O操作，A进行CPU操作，C等候。 </p>
+<p>  B执行完I/O操作以后，C再操作</p>
+<hr>
+<h5 id="5-针对二分查找算法，假设一个有序数组有-136-个元素，那么要查找到第-10-个元素，-需要比较的元素为"><a href="#5-针对二分查找算法，假设一个有序数组有-136-个元素，那么要查找到第-10-个元素，-需要比较的元素为" class="headerlink" title="5.针对二分查找算法，假设一个有序数组有 136 个元素，那么要查找到第 10 个元素， 需要比较的元素为"></a>5.针对二分查找算法，假设一个有序数组有 136 个元素，那么要查找到第 10 个元素， 需要比较的元素为</h5><p>A. 68,34,17,9,13,11,10</p>
+<p>B. 68,34,17,8,12,10</p>
+<p>C. 69,35,18,10</p>
+<p>D. 68,34,18,9,13,11,10</p>
+<p>正确答案：B</p>
+<p><img src="/image/7670357_1535630115432_53CEA007563557CCA6E2FD0CDA1861DB.jpg" srcset="/img/loading.gif" lazyload></p>
+<hr>
+<h5 id="6-入栈序列是：a1-a3-a5-a2-a4-a6-出栈序列是：a5-a4-a2-a6-a3-a1，则栈的容量最小是"><a href="#6-入栈序列是：a1-a3-a5-a2-a4-a6-出栈序列是：a5-a4-a2-a6-a3-a1，则栈的容量最小是" class="headerlink" title="6.入栈序列是：a1,a3,a5,a2,a4,a6,出栈序列是：a5,a4,a2,a6,a3,a1，则栈的容量最小是"></a>6.入栈序列是：a1,a3,a5,a2,a4,a6,出栈序列是：a5,a4,a2,a6,a3,a1，则栈的容量最小是</h5><p>A. 5</p>
+<p>B. 3</p>
+<p>C. 6</p>
+<p>D. 4</p>
+<p>正确答案：D</p>
+<figure class="highlight tap"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs tap">1                         1<br>3                        <span class="hljs-number"> 1 </span>3<br>5                        <span class="hljs-number"> 1 </span>3 5<br>-                        <span class="hljs-number"> 1 </span>3                     5<br>2                        <span class="hljs-number"> 1 </span>3 2<br>4                        <span class="hljs-number"> 1 </span>3<span class="hljs-number"> 2 </span>4<br>-                        <span class="hljs-number"> 1 </span>3<span class="hljs-number"> 2 </span>                  4<br>-                        <span class="hljs-number"> 1 </span>3                     2<br>6                        <span class="hljs-number"> 1 </span>3<span class="hljs-number"> 6 </span>             <br>-                        <span class="hljs-number"> 1 </span>3                     6<br>-                        <span class="hljs-number"> 1 </span>                      3<br>-                                                 1<br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h5 id="7-在现代计算机上，即使是单核单CPU系统，一个程序的死循环bug，也不会导致别的程序完全得不到时间运行，这跟哪些因素有关？"><a href="#7-在现代计算机上，即使是单核单CPU系统，一个程序的死循环bug，也不会导致别的程序完全得不到时间运行，这跟哪些因素有关？" class="headerlink" title="7.在现代计算机上，即使是单核单CPU系统，一个程序的死循环bug，也不会导致别的程序完全得不到时间运行，这跟哪些因素有关？"></a>7.在现代计算机上，即使是单核单CPU系统，一个程序的死循环bug，也不会导致别的程序完全得不到时间运行，这跟哪些因素有关？</h5><p>A. 时钟中断</p>
+<p>B. OS进程（线程）时间片划分</p>
+<p>C. 虚拟内存机制</p>
+<p>D. OS抢占式调度</p>
+<p>正确答案：ABD</p>
+<hr>
+<h5 id="8-Linux-系统中列出当前占用8080端口进程的命令1"><a href="#8-Linux-系统中列出当前占用8080端口进程的命令1" class="headerlink" title="8.Linux 系统中列出当前占用8080端口进程的命令1"></a>8.Linux 系统中列出当前占用8080端口进程的命令1</h5><p>正确答案：</p>
+<figure class="highlight sh"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">lsof -i:8080<br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h5 id="9-21点是一种扑克游戏。如果玩家拿到扑克牌的点数总和超过21点则称为爆点，被判失败。其中A牌可以被记为11点或者1点，J-Q-K-都记为10点。如果用一副牌玩游戏（52张牌），玩家手上拿到一个K和6。那他再抽两张牌会爆点的可能性约有多大？"><a href="#9-21点是一种扑克游戏。如果玩家拿到扑克牌的点数总和超过21点则称为爆点，被判失败。其中A牌可以被记为11点或者1点，J-Q-K-都记为10点。如果用一副牌玩游戏（52张牌），玩家手上拿到一个K和6。那他再抽两张牌会爆点的可能性约有多大？" class="headerlink" title="9.21点是一种扑克游戏。如果玩家拿到扑克牌的点数总和超过21点则称为爆点，被判失败。其中A牌可以被记为11点或者1点，J, Q, K 都记为10点。如果用一副牌玩游戏（52张牌），玩家手上拿到一个K和6。那他再抽两张牌会爆点的可能性约有多大？"></a>9.21点是一种扑克游戏。如果玩家拿到扑克牌的点数总和超过21点则称为爆点，被判失败。其中A牌可以被记为11点或者1点，J, Q, K 都记为10点。如果用一副牌玩游戏（52张牌），玩家手上拿到一个K和6。那他再抽两张牌会爆点的可能性约有多大？</h5><p>正确答案：</p>
+<p>93.7% 或 93.8% </p>
+<hr>
+<h5 id="10-已知二叉树的中序遍历结果为MFLEDABKCGHJI，后序遍历结果为FELMDKHGJICBA，则其先序遍历结果为"><a href="#10-已知二叉树的中序遍历结果为MFLEDABKCGHJI，后序遍历结果为FELMDKHGJICBA，则其先序遍历结果为" class="headerlink" title="10.已知二叉树的中序遍历结果为MFLEDABKCGHJI，后序遍历结果为FELMDKHGJICBA，则其先序遍历结果为"></a>10.已知二叉树的中序遍历结果为MFLEDABKCGHJI，后序遍历结果为FELMDKHGJICBA，则其先序遍历结果为</h5><p>正确答案：</p>
+<figure class="highlight ebnf"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">ADMLFEBCKIJGH</span><br></code></pre></td></tr></tbody></table></figure>
+
+<p><img src="/image/794224367_1552819658034_46AB337EAF03E990FA44D325F26F96CF.png" srcset="/img/loading.gif" lazyload></p>
+<hr>
+<h5 id="11-为了解决进程间的同步和互斥问题，通常采用一种称为信号量机制的方法。若系统中有7个进程共享若干个资源R，每个进程都需要6个资源R，那么使系统不发生死锁的资源R的最少数目是"><a href="#11-为了解决进程间的同步和互斥问题，通常采用一种称为信号量机制的方法。若系统中有7个进程共享若干个资源R，每个进程都需要6个资源R，那么使系统不发生死锁的资源R的最少数目是" class="headerlink" title="11.为了解决进程间的同步和互斥问题，通常采用一种称为信号量机制的方法。若系统中有7个进程共享若干个资源R，每个进程都需要6个资源R，那么使系统不发生死锁的资源R的最少数目是"></a>11.为了解决进程间的同步和互斥问题，通常采用一种称为信号量机制的方法。若系统中有7个进程共享若干个资源R，每个进程都需要6个资源R，那么使系统不发生死锁的资源R的最少数目是</h5><p>正确答案：</p>
+<figure class="highlight"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">36<br></code></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight abnf"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs abnf">用银行家算法计算死锁时，假设有m个共享资源，n个进程，每个进程所需的最大资源数为w，那么仅是m&gt;n*(w-<span class="hljs-number">1</span>)时，才会不死锁。如果每个进程所需的资源数不同，则先平均分配，只要有一个进程满足了资源要求，就不会死锁。<br><br>不会发生死锁的资源数m &gt; n * (w-<span class="hljs-number">1</span>) <span class="hljs-operator">=</span> <span class="hljs-number">7</span> * (<span class="hljs-number">6</span> - <span class="hljs-number">1</span>) <span class="hljs-operator">=</span> <span class="hljs-number">7</span> * <span class="hljs-number">5</span> <span class="hljs-operator">=</span> <span class="hljs-number">35</span><br>最少： <span class="hljs-number">36</span>个<br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h5 id="12-假设某一虚拟存储系统采用先进先出（FIFO）页面淘汰算法，有一个进程在内存中占3页（开始时内存为空），当访问如下页面序列号后1-2-3-1-2-4-2-3-5-3-4-5-6会产生几次缺页"><a href="#12-假设某一虚拟存储系统采用先进先出（FIFO）页面淘汰算法，有一个进程在内存中占3页（开始时内存为空），当访问如下页面序列号后1-2-3-1-2-4-2-3-5-3-4-5-6会产生几次缺页" class="headerlink" title="12.假设某一虚拟存储系统采用先进先出（FIFO）页面淘汰算法，有一个进程在内存中占3页（开始时内存为空），当访问如下页面序列号后1,2,3,1,2,4,2,3,5,3,4,5,6会产生几次缺页"></a>12.假设某一虚拟存储系统采用先进先出（FIFO）页面淘汰算法，有一个进程在内存中占3页（开始时内存为空），当访问如下页面序列号后1,2,3,1,2,4,2,3,5,3,4,5,6会产生几次缺页</h5><p>正确答案：</p>
+<figure class="highlight"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">6<br></code></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight apache"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> 依次进入缺页产生次数为<span class="hljs-number">3</span>  接下来<span class="hljs-number">1</span> <span class="hljs-number">2</span> 存在，<span class="hljs-number">4</span>没有 则<span class="hljs-number">1</span>出 现在为<span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span> ，次数加<span class="hljs-number">1</span>则为<span class="hljs-number">4</span> ，<span class="hljs-number">2</span> <span class="hljs-number">3</span> 存在 <span class="hljs-number">5</span>没有则 <span class="hljs-number">2</span>出，缺页次数加<span class="hljs-number">1</span>后为<span class="hljs-number">5</span>，现在为 <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span> ，<span class="hljs-number">5</span>存在，<span class="hljs-number">6</span>没有则<span class="hljs-number">3</span>出现在为 <span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span> ，缺页次数加<span class="hljs-number">1</span> 为<span class="hljs-number">6</span><br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h5 id="13-若磁头的当前位置在第100磁道，现在有一磁盘读写请求序列如下：32-286-125-192-28-41-297-413-29-64-80-4。若采用最短寻道时间优先算法，则平均寻道长度是多少？"><a href="#13-若磁头的当前位置在第100磁道，现在有一磁盘读写请求序列如下：32-286-125-192-28-41-297-413-29-64-80-4。若采用最短寻道时间优先算法，则平均寻道长度是多少？" class="headerlink" title="13.若磁头的当前位置在第100磁道，现在有一磁盘读写请求序列如下：32,286,125,192,28,41,297,413,29,64,80,4。若采用最短寻道时间优先算法，则平均寻道长度是多少？"></a>13.若磁头的当前位置在第100磁道，现在有一磁盘读写请求序列如下：32,286,125,192,28,41,297,413,29,64,80,4。若采用最短寻道时间优先算法，则平均寻道长度是多少？</h5><p>正确答案：</p>
+<figure class="highlight apache"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">42</span>.<span class="hljs-number">08</span><br></code></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight subunit"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs subunit">磁盘最短寻道时间优先算法：<br>从100开始依次搜索顺序：80，64，41，32，29，28，4，125，192，286，297，413<br> 寻道长：20<span class="hljs-string">+16</span><span class="hljs-string">+23</span><span class="hljs-string">+9</span><span class="hljs-string">+3</span><span class="hljs-string">+1</span><span class="hljs-string">+24</span><span class="hljs-string">+121</span><span class="hljs-string">+67</span><span class="hljs-string">+94</span><span class="hljs-string">+11</span><span class="hljs-string">+116</span> <br>                / 12 = 42.08<br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h5 id="14-用两个栈来实现一个队列，完成队列的Push和Pop操作。-队列中的元素为int类型。"><a href="#14-用两个栈来实现一个队列，完成队列的Push和Pop操作。-队列中的元素为int类型。" class="headerlink" title="14.用两个栈来实现一个队列，完成队列的Push和Pop操作。 队列中的元素为int类型。"></a>14.用两个栈来实现一个队列，完成队列的Push和Pop操作。 队列中的元素为int类型。</h5><p>同LeetCode <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/implement-queue-using-stacks/">232. 用栈实现队列</a></p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyQueue</span> {<br>    Stack&lt;Integer&gt; sta1,sta2;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MyQueue</span><span class="hljs-params">()</span> {<br>        sta1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();<br>        sta2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();<br>    }<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">push</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {<br>        sta1.push(x);<br>    }<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">pop</span><span class="hljs-params">()</span> {<br>        <span class="hljs-keyword">if</span> (sta2.isEmpty()) {<br>            <span class="hljs-keyword">while</span> (!sta1.isEmpty()) {<br>                sta2.push(sta1.pop());<br>            }<br>        }<br>        <span class="hljs-keyword">return</span> sta2.pop();<br>    }<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">peek</span><span class="hljs-params">()</span> {<br>        <span class="hljs-keyword">if</span> (sta2.isEmpty()) {<br>            <span class="hljs-keyword">while</span> (!sta1.isEmpty()) {<br>                sta2.push(sta1.pop());<br>            }<br>        }<br>        <span class="hljs-keyword">return</span> sta2.peek();<br>    }<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">empty</span><span class="hljs-params">()</span> {<br>        <span class="hljs-keyword">return</span> sta1.isEmpty() &amp;&amp; sta2.isEmpty();<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h5 id="15-把只包含因子2、3和5的数称作丑数（Ugly-Number）。例如6、8都是丑数，但14不是，因为它包含因子7。-习惯上我们把1当做是第一个丑数。求按从小到大的顺序的第N个丑数。"><a href="#15-把只包含因子2、3和5的数称作丑数（Ugly-Number）。例如6、8都是丑数，但14不是，因为它包含因子7。-习惯上我们把1当做是第一个丑数。求按从小到大的顺序的第N个丑数。" class="headerlink" title="15.把只包含因子2、3和5的数称作丑数（Ugly Number）。例如6、8都是丑数，但14不是，因为它包含因子7。 习惯上我们把1当做是第一个丑数。求按从小到大的顺序的第N个丑数。"></a>15.把只包含因子2、3和5的数称作丑数（Ugly Number）。例如6、8都是丑数，但14不是，因为它包含因子7。 习惯上我们把1当做是第一个丑数。求按从小到大的顺序的第N个丑数。</h5><p>同LeetCode <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/chou-shu-lcof/">剑指 Offer 49. 丑数</a></p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">nthUglyNumber</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {<br>        <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];<br>        dp[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>,b = <span class="hljs-number">0</span>, c = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; n; ++i) {<br>            <span class="hljs-type">int</span> <span class="hljs-variable">n1</span> <span class="hljs-operator">=</span> dp[a] * <span class="hljs-number">2</span>,n2 = dp[b] * <span class="hljs-number">3</span>,n3 = dp[c] * <span class="hljs-number">5</span>;<br>            dp[i] = Math.min(Math.min(n1,n2),n3);<br>            <span class="hljs-keyword">if</span> (dp[i] == n1) a ++;<br>            <span class="hljs-keyword">if</span> (dp[i] == n2) b ++;<br>            <span class="hljs-keyword">if</span> (dp[i] == n3) c ++;<br>        }<br>        <span class="hljs-keyword">return</span> dp[n - <span class="hljs-number">1</span>];<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h5 id="16-现在一副54张的扑克牌（2个大王-2个小王），任意抽五张牌，判断是不是顺子。其中A看作1-J为11-Q为12-K为13。另外这里还有个“癞子”规则，就是大王和小王可以代替任何牌。比如：“红心A-黑桃3-小王-大王-方片5”-上面的5张牌就可以变成“1-2-3-4-5”-大小王分别看作2和4-。现在我们要用程序来判断5张牌是不是顺子。为了方便起见-你可以认为大小王是0。"><a href="#16-现在一副54张的扑克牌（2个大王-2个小王），任意抽五张牌，判断是不是顺子。其中A看作1-J为11-Q为12-K为13。另外这里还有个“癞子”规则，就是大王和小王可以代替任何牌。比如：“红心A-黑桃3-小王-大王-方片5”-上面的5张牌就可以变成“1-2-3-4-5”-大小王分别看作2和4-。现在我们要用程序来判断5张牌是不是顺子。为了方便起见-你可以认为大小王是0。" class="headerlink" title="16.现在一副54张的扑克牌（2个大王,2个小王），任意抽五张牌，判断是不是顺子。其中A看作1,J为11,Q为12,K为13。另外这里还有个“癞子”规则，就是大王和小王可以代替任何牌。比如：“红心A,黑桃3,小王,大王,方片5”, 上面的5张牌就可以变成“1,2,3,4,5”(大小王分别看作2和4)。现在我们要用程序来判断5张牌是不是顺子。为了方便起见,你可以认为大小王是0。"></a>16.现在一副54张的扑克牌（2个大王,2个小王），任意抽五张牌，判断是不是顺子。其中A看作1,J为11,Q为12,K为13。另外这里还有个“癞子”规则，就是大王和小王可以代替任何牌。比如：“红心A,黑桃3,小王,大王,方片5”, 上面的5张牌就可以变成“1,2,3,4,5”(大小王分别看作2和4)。现在我们要用程序来判断5张牌是不是顺子。为了方便起见,你可以认为大小王是0。</h5><p>同LeetCode <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/bu-ke-pai-zhong-de-shun-zi-lcof/">面试题61. 扑克牌中的顺子</a></p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isStraight</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {<br>        <span class="hljs-type">int</span> <span class="hljs-variable">joker</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        Arrays.sort(nums);<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++) {<br>            <span class="hljs-keyword">if</span>(nums[i] == <span class="hljs-number">0</span>) joker++;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(nums[i] == nums[i + <span class="hljs-number">1</span>]) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>        }<br>        <span class="hljs-keyword">return</span> nums[<span class="hljs-number">4</span>] - nums[joker] &lt; <span class="hljs-number">5</span>;<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h5 id="17-代码能否保证所有Hello-DWD一定在Done-All-DWD之前输出？如果不能，请尽可能多的提供方法来保证"><a href="#17-代码能否保证所有Hello-DWD一定在Done-All-DWD之前输出？如果不能，请尽可能多的提供方法来保证" class="headerlink" title="17.代码能否保证所有Hello, DWD一定在Done All DWD之前输出？如果不能，请尽可能多的提供方法来保证"></a>17.代码能否保证所有Hello, DWD一定在Done All DWD之前输出？如果不能，请尽可能多的提供方法来保证</h5><p><img src="/image/305066_1534750392503_B5EDEED71BFBF89B70B287FD212A36B7.png" srcset="/img/loading.gif" lazyload></p>
+<p>正确答案：</p>
+<figure class="highlight awk"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">不能。CountDownLatch<span class="hljs-regexp">/线程池await/</span>共享变量等<br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h5 id="18-代码的输出结果是："><a href="#18-代码的输出结果是：" class="headerlink" title="18.代码的输出结果是："></a>18.代码的输出结果是：</h5><p><img src="/image/305066_1534750278152_FEE897EE5CCF6E31EDE586CBBB9A27C9.png" srcset="/img/loading.gif" lazyload></p>
+<p>正确答案：</p>
+<figure class="highlight"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">3<br></code></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight kotlin"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">此题考察的是<span class="hljs-keyword">finally</span>抢占<span class="hljs-keyword">return</span>的知识点。<br>当<span class="hljs-keyword">finally</span>里面有<span class="hljs-keyword">return</span>语句时，会执行<span class="hljs-keyword">finally</span>里的<span class="hljs-keyword">return</span>语句而忽略<span class="hljs-keyword">try</span>，<span class="hljs-keyword">catch</span>代码块里的<span class="hljs-keyword">return</span>语句。<br>所以这里不管抛不抛出异常都会执行<span class="hljs-keyword">finally</span>里的<span class="hljs-keyword">return</span>语句。<br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h5 id="19-代码的输出结果是："><a href="#19-代码的输出结果是：" class="headerlink" title="19.代码的输出结果是："></a>19.代码的输出结果是：</h5><p><img src="/image/305066_1534750195915_7E8C99BB2BBEE41E7A3647118425284E.png" srcset="/img/loading.gif" lazyload></p>
+<p>正确答案：</p>
+<figure class="highlight stata"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs stata"><span class="hljs-keyword">AS</span> <br><span class="hljs-keyword">BS</span> <br><span class="hljs-keyword">AC</span> <br>BC <br><span class="hljs-keyword">AC</span> <br>BC<br></code></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight haxe"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs haxe">静态语句块、构造语句块和构造函数的执行顺序 <br>静态语句块：在类加载的时候执行（从父类到子类） <br>静态语句块执行完，执行main方法 <br><span class="hljs-keyword">new</span><span class="hljs-type"></span>对象，从上到下先执行构造代码块在执行构造器<br></code></pre></td></tr></tbody></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AC%94%E8%AF%95/" class="category-chain-item">笔试</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">#排序算法</a>
+      
+        <a href="/tags/%E5%9F%BA%E7%A1%80/">#基础</a>
+      
+        <a href="/tags/%E6%99%BA%E5%8A%9B%E9%A2%98/">#智力题</a>
+      
+        <a href="/tags/%E7%BA%A2%E9%BB%91%E6%A0%91/">#红黑树</a>
+      
+        <a href="/tags/b-%E6%95%B0/">#b+数</a>
+      
+        <a href="/tags/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/">#二分查找</a>
+      
+        <a href="/tags/linux/">#linux</a>
+      
+        <a href="/tags/%E9%93%B6%E8%A1%8C%E5%AE%B6%E7%AE%97%E6%B3%95/">#银行家算法</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/03/23/%E7%AC%94%E8%AF%95/%E5%87%B9%E5%87%B8%E7%A7%91%E6%8A%802017%E7%A7%8B%E6%8B%9Bjava%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%AC%94%E8%AF%95/" title="凹凸科技2017秋招java工程师笔试">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">凹凸科技2017秋招java工程师笔试</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/03/20/%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E6%A0%91/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E8%BF%AD%E4%BB%A3%E9%81%8D%E5%8E%86/" title="二叉树的迭代遍历">
+                        <span class="hidden-mobile">二叉树的迭代遍历</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a><span>晴天</span></a> <i class="iconfont icon-love"></i> <a><span>晚风</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
