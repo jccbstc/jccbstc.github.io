@@ -73,9 +73,9 @@
 
 
   
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="业余的日落患者" type="application/atom+xml">
-
+<meta name="generator" content="Hexo 6.3.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="业余的日落患者" type="application/atom+xml">
 </head>
 
 
@@ -233,6 +233,128 @@
               <div class="col-12 col-md-10 m-auto">
                 
 
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/02/26/%E5%B9%B6%E5%8F%91/%E5%B9%B6%E5%8F%91%E7%B1%BB%E9%97%AE%E9%A2%98/" target="_self">
+          并发类问题
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/02/26/%E5%B9%B6%E5%8F%91/%E5%B9%B6%E5%8F%91%E7%B1%BB%E9%97%AE%E9%A2%98/" target="_self">
+        <div>
+          并发类问题线程状态六种状态及转换  新建 当一个线程对象被创建，但还未调用 start 方法时处于新建状态 此时未与操作系统底层线程关联   可运行 调用了 start 方法，就会由新建进入可运行 此时与底层线程关联，由操作系统调度执行   终结 线程内代码已经执行完毕，由可运行进入终结 此时会取消与底层线程关联   阻塞 当获取锁失败后，由可运行进入 Monitor 的阻塞队列阻塞，此时不占用
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-02-26 21:03" pubdate>
+              2023-02-26
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B9%B6%E5%8F%91/" class="category-chain-item">并发</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%BA%BF%E7%A8%8B/">#线程</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/02/23/%E5%9F%BA%E7%A1%80/HashMap/" target="_self">
+          HashMap
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/02/23/%E5%9F%BA%E7%A1%80/HashMap/" target="_self">
+        <div>
+          HashMap底层数据结构，1.7与1.8有何不同？1.7数组+链表，1.8数组+（链表|红黑树） 为何要用红黑树，为何一上来不树化？红黑树用来避免DoS攻击，防止链表超长时性能下降，树化应当是偶然情况hash表的查找，更新的时间复杂度是0(1），而红黑树的查找，更新的时间复杂度是0(log2n)，TreeNode 占用空间也比普通Node的大，如非必要，尽量还是使用链表 树化阈值为何是8 has
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-02-23 13:36" pubdate>
+              2023-02-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/HashMap/">#HashMap</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
 
   <div class="row mx-auto index-card">
     
@@ -747,132 +869,6 @@
               <a href="/tags/%E6%A0%88/">#栈</a>
             
               <a href="/tags/%E8%AE%BE%E8%AE%A1/">#设计</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/12/27/%E7%AE%97%E6%B3%95/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/%E6%A3%8B%E7%9B%98%E9%97%AE%E9%A2%98/" target="_self">
-          棋盘问题
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/12/27/%E7%AE%97%E6%B3%95/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/%E6%A3%8B%E7%9B%98%E9%97%AE%E9%A2%98/" target="_self">
-        <div>
-          棋盘问题51.N 皇后 37.解数独 51.N 皇后12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758class Solution {    List&lt;List&lt;String&gt;&gt; list = new Array
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-12-27 11:40" pubdate>
-              2022-12-27
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" class="category-chain-item">数据结构与算法</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%95%B0%E7%BB%84/">#数组</a>
-            
-              <a href="/tags/%E5%9B%9E%E6%BA%AF/">#回溯</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/12/26/%E7%AE%97%E6%B3%95/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/%E5%85%A8%E6%8E%92%E5%88%97%E9%97%AE%E9%A2%98/" target="_self">
-          全排列问题
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/12/26/%E7%AE%97%E6%B3%95/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/%E5%85%A8%E6%8E%92%E5%88%97%E9%97%AE%E9%A2%98/" target="_self">
-        <div>
-          全排列问题46.全排列 47.全排列 II 46.全排列1234567891011121314151617181920212223242526class Solution {    List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();    LinkedList&lt;Integer&gt; path = new Lin
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-12-26 11:07" pubdate>
-              2022-12-26
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" class="category-chain-item">数据结构与算法</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%95%B0%E7%BB%84/">#数组</a>
-            
-              <a href="/tags/%E5%9B%9E%E6%BA%AF/">#回溯</a>
             
           </div>
         
