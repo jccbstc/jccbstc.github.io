@@ -1,0 +1,897 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/logo/h1.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="及川彻">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="百度校招Java研发工程师笔试卷1.当请求过多，超出线程池负荷的时候，会触发拒绝策略。下列选项中，对于拒绝策略的描述错误的是：A. CallerRunsPolicy，线程调用运行该任务的 execute 本身，此策略提供简单的反馈控制机制，能够减缓新任务的提交速度。 B. AbortPolicy，处理程序遭到拒绝将直接抛出异常，丢弃任务。 C. DiscardPolicy，不能执行的任务将被删除。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="百度校招Java研发工程师笔试卷">
+<meta property="og:url" content="http://example.com/2023/03/30/%E7%AC%94%E8%AF%95/%E7%99%BE%E5%BA%A6%E6%A0%A1%E6%8B%9BJava%E7%A0%94%E5%8F%91%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%AC%94%E8%AF%95%E5%8D%B7/index.html">
+<meta property="og:site_name" content="业余的日落患者">
+<meta property="og:description" content="百度校招Java研发工程师笔试卷1.当请求过多，超出线程池负荷的时候，会触发拒绝策略。下列选项中，对于拒绝策略的描述错误的是：A. CallerRunsPolicy，线程调用运行该任务的 execute 本身，此策略提供简单的反馈控制机制，能够减缓新任务的提交速度。 B. AbortPolicy，处理程序遭到拒绝将直接抛出异常，丢弃任务。 C. DiscardPolicy，不能执行的任务将被删除。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/baidu.webp">
+<meta property="article:published_time" content="2023-03-30T07:48:54.986Z">
+<meta property="article:modified_time" content="2023-03-30T13:08:19.429Z">
+<meta property="article:author" content="及川彻">
+<meta property="article:tag" content="排序算法">
+<meta property="article:tag" content="并发">
+<meta property="article:tag" content="JVM">
+<meta property="article:tag" content="二分查找">
+<meta property="article:tag" content="AOP">
+<meta property="article:tag" content="分布式锁">
+<meta property="article:tag" content="哈夫曼编码">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/baidu.webp">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>百度校招Java研发工程师笔试卷 - 业余的日落患者</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="业余的日落患者" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>晴天与晚风</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/baidu.webp') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="百度校招Java研发工程师笔试卷"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-30 15:48" pubdate>
+          2023年3月30日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          65 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">百度校招Java研发工程师笔试卷</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="百度校招Java研发工程师笔试卷"><a href="#百度校招Java研发工程师笔试卷" class="headerlink" title="百度校招Java研发工程师笔试卷"></a>百度校招Java研发工程师笔试卷</h1><h5 id="1-当请求过多，超出线程池负荷的时候，会触发拒绝策略。下列选项中，对于拒绝策略的描述错误的是："><a href="#1-当请求过多，超出线程池负荷的时候，会触发拒绝策略。下列选项中，对于拒绝策略的描述错误的是：" class="headerlink" title="1.当请求过多，超出线程池负荷的时候，会触发拒绝策略。下列选项中，对于拒绝策略的描述错误的是："></a>1.当请求过多，超出线程池负荷的时候，会触发拒绝策略。下列选项中，对于拒绝策略的描述错误的是：</h5><p>A. CallerRunsPolicy，线程调用运行该任务的 execute 本身，此策略提供简单的反馈控制机制，能够减缓新任务的提交速度。</p>
+<p>B. AbortPolicy，处理程序遭到拒绝将直接抛出异常，丢弃任务。</p>
+<p>C. DiscardPolicy，不能执行的任务将被删除。这种策略将丢弃任务，同时也会抛出异常。</p>
+<p>D. DiscardOldestPolicy，如果执行程序尚未关闭，则位于工作队列头部的任务将被删除，然后重试执行程序。</p>
+<p>正确答案：C</p>
+<figure class="highlight mipsasm"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">线程池拒绝策略：<br>  （<span class="hljs-number">1</span>） AbortPolicy 。丢弃任务，并抛出RejectedExecutionException异常，线程池默认拒绝策略；<br>  （<span class="hljs-number">2</span>） <span class="hljs-keyword">DiscardPolicy。丢弃任务，不抛出异常；</span><br><span class="hljs-keyword"></span>  （<span class="hljs-number">3</span>） <span class="hljs-keyword">DiscardOldesPolicy.丢弃队列最前面的任务，然后重新提交被拒绝的任务；</span><br><span class="hljs-keyword"></span>  （<span class="hljs-number">4</span>） CallerRunPolicy。由调用的线程处理该任务，谁调用谁的线程处理。<br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h5 id="2-下列关于AOP术语的描述中，错误的是："><a href="#2-下列关于AOP术语的描述中，错误的是：" class="headerlink" title="2.下列关于AOP术语的描述中，错误的是："></a>2.下列关于AOP术语的描述中，错误的是：</h5><p>A. Joinpoint，是指目标对象上所定义的各个方法。</p>
+<p>B. Pointcut，是用来定义当前的横切逻辑准备织入到哪些连接点上。</p>
+<p>C. Advice，用来定义横切逻辑，即在连接点上准备织入什么样的逻辑。</p>
+<p>D. Aspect，是一个用来封装切点和通知的组件。</p>
+<p>正确答案：A</p>
+<figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs markdown"><span class="hljs-bullet">1.</span> 连接点（Joinpoint）<br>连接点描述的是程序执行的某个特定位置<br><span class="hljs-bullet">2.</span> 切入点（Pointcut）<br>切入点是一个连接点的过滤条件，AOP 通过切点定位到特定的连接点。<br><span class="hljs-bullet">3.</span> 通知（Advice）<br>切面在某个具体的连接点采取的行为或行动，称为通知。<br><span class="hljs-bullet">4.</span> 通知器（Advisor）<br>通知器由一个切入点（pointcut）和一个通知（Advice）组成。<br><span class="hljs-bullet">5.</span> 切面（Aspect）<br>与通知器（advisor）类似都是通知+切入点。<br><span class="hljs-bullet">6.</span> 目标(Target)<br>被通知的对象（方法）<br><span class="hljs-bullet">7.</span> 代理(Proxy)<br>向目标对象应用通知之后创建的对象<br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h5 id="3-JVM中有很多垃圾回收策略，其中会用到很多垃圾收集器，如果我们将垃圾收集器的作用范围划分为新生代和老年代的话，那么以下哪个选项中的所有收集器的作用域是属于老年代"><a href="#3-JVM中有很多垃圾回收策略，其中会用到很多垃圾收集器，如果我们将垃圾收集器的作用范围划分为新生代和老年代的话，那么以下哪个选项中的所有收集器的作用域是属于老年代" class="headerlink" title="3.JVM中有很多垃圾回收策略，其中会用到很多垃圾收集器，如果我们将垃圾收集器的作用范围划分为新生代和老年代的话，那么以下哪个选项中的所有收集器的作用域是属于老年代"></a>3.JVM中有很多垃圾回收策略，其中会用到很多垃圾收集器，如果我们将垃圾收集器的作用范围划分为新生代和老年代的话，那么以下哪个选项中的所有收集器的作用域是属于老年代</h5><p>A. Serial收集器、ParNew收集器、Paraller Scavenge收集器</p>
+<p>B. Serial Old收集器、Paraller Old收集器、CMS收集器</p>
+<p>C. Serial Old收集器、Paraller Old收集器、Paraller Scavenge收集器</p>
+<p>D. CMS收集器、ParNew收集器、Paraller Scavenge收集器</p>
+<p>正确答案：B</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs powershell">年轻代：serial <span class="hljs-built_in">GC</span>、parNew <span class="hljs-built_in">GC</span>、paraller Scavenge <span class="hljs-built_in">GC</span><br>老年代：serial old <span class="hljs-built_in">GC</span> 、paraller old <span class="hljs-built_in">GC</span>、CMS<br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h5 id="4-下面几项关于Java程序初始化的几个原则："><a href="#4-下面几项关于Java程序初始化的几个原则：" class="headerlink" title="4.下面几项关于Java程序初始化的几个原则："></a>4.下面几项关于Java程序初始化的几个原则：</h5><p>①静态对象（变量）优先于非静态对象（变量）初始化；</p>
+<p>②父类优先于子类进行初始化；</p>
+<p>③按照成员变量的定义顺序进行初始化；</p>
+<p>其中正确的有：</p>
+<p>A. ①②</p>
+<p>B. ①③</p>
+<p>C. ②③</p>
+<p>D. ①②③</p>
+<p>正确答案：D</p>
+<hr>
+<h5 id="5-以下哪个不是分布式锁的实现方式"><a href="#5-以下哪个不是分布式锁的实现方式" class="headerlink" title="5.以下哪个不是分布式锁的实现方式"></a>5.以下哪个不是分布式锁的实现方式</h5><p>A. 使用数据库乐观锁实现</p>
+<p>B. 使用数据库悲观锁实现</p>
+<p>C. 使用redis的setnx()、expire()方法，用于分布式锁</p>
+<p>D. 基于Zookeeper实现分布式锁</p>
+<p>正确答案：B</p>
+<figure class="highlight"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs">目前分布式锁的实现方案主要包括三种：<br><br>1.基于数据库（唯一索引）<br>2.基于缓存（Redis，memcached，tair）<br>3.基于Zookeeper<br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h5 id="6-对于数列4、5、6、7、9、12、18、23，如果采用折半查找元素9，请问需要查找几次？"><a href="#6-对于数列4、5、6、7、9、12、18、23，如果采用折半查找元素9，请问需要查找几次？" class="headerlink" title="6.对于数列4、5、6、7、9、12、18、23，如果采用折半查找元素9，请问需要查找几次？"></a>6.对于数列4、5、6、7、9、12、18、23，如果采用折半查找元素9，请问需要查找几次？</h5><p>A. 2</p>
+<p>B. 3</p>
+<p>C. 4</p>
+<p>D. 5</p>
+<p>正确答案：B</p>
+<figure class="highlight apache"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">n</span> 代表数组长度<br><span class="hljs-attribute">4</span>、<span class="hljs-number">5</span>、<span class="hljs-number">6</span>、<span class="hljs-number">7</span>、<span class="hljs-number">9</span>、<span class="hljs-number">12</span>、<span class="hljs-number">18</span>、<span class="hljs-number">23</span><br><span class="hljs-attribute">1</span>)   Array[(<span class="hljs-number">0</span> + n - <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>]  小于 <span class="hljs-number">9</span>, (<span class="hljs-number">0</span> + n - <span class="hljs-number">1</span>) / <span class="hljs-number">2</span> = <span class="hljs-number">3</span><br><span class="hljs-attribute">2</span>)   Array[(<span class="hljs-number">3</span> + <span class="hljs-number">1</span> + n - <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>] 大于 <span class="hljs-number">9</span>, (<span class="hljs-number">3</span> + <span class="hljs-number">1</span> + n - <span class="hljs-number">1</span>) / <span class="hljs-number">2</span> = <span class="hljs-number">5</span><br><span class="hljs-attribute">3</span>)   Array[(<span class="hljs-number">3</span> + <span class="hljs-number">1</span> + <span class="hljs-number">5</span> - <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>] 等于 <span class="hljs-number">9</span><br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h5 id="7-现有一字符串”hello-world”，使用哈夫曼编码最少使用多少bit内存："><a href="#7-现有一字符串”hello-world”，使用哈夫曼编码最少使用多少bit内存：" class="headerlink" title="7.现有一字符串”hello world”，使用哈夫曼编码最少使用多少bit内存："></a>7.现有一字符串”hello world”，使用哈夫曼编码最少使用多少bit内存：</h5><p>A. 4</p>
+<p>B. 32</p>
+<p>C. 64</p>
+<p>D. 88</p>
+<p>正确答案：B</p>
+<hr>
+<h5 id="8-已知现有一个大小为4初始状态为空的栈，现在有一组数据经过这个栈后，最终的数据顺序是-2-5-4-1-3-问原始的进栈数据不可能是以下的哪组"><a href="#8-已知现有一个大小为4初始状态为空的栈，现在有一组数据经过这个栈后，最终的数据顺序是-2-5-4-1-3-问原始的进栈数据不可能是以下的哪组" class="headerlink" title="8.已知现有一个大小为4初始状态为空的栈，现在有一组数据经过这个栈后，最终的数据顺序是:2 5 4 1 3,问原始的进栈数据不可能是以下的哪组"></a>8.已知现有一个大小为4初始状态为空的栈，现在有一组数据经过这个栈后，最终的数据顺序是:2 5 4 1 3,问原始的进栈数据不可能是以下的哪组</h5><p>A. 1 4 5 2 3</p>
+<p>B. 5 2 3 1 4</p>
+<p>C. 3 4 5 2 1</p>
+<p>D. 4 1 3 5 2</p>
+<p>正确答案：D</p>
+<hr>
+<h5 id="9-假设有一张表test-表中存放着全国的城市信息以及其所在的省份-现在要以每个省份包含名称以’州’为结尾的城市数量降序排序-包含相同数量的省份以省份名称降序拍戏-最终输出第二多以及第三多的省份以及数量-那么下面正确的sql语句是："><a href="#9-假设有一张表test-表中存放着全国的城市信息以及其所在的省份-现在要以每个省份包含名称以’州’为结尾的城市数量降序排序-包含相同数量的省份以省份名称降序拍戏-最终输出第二多以及第三多的省份以及数量-那么下面正确的sql语句是：" class="headerlink" title="9.假设有一张表test,表中存放着全国的城市信息以及其所在的省份,现在要以每个省份包含名称以’州’为结尾的城市数量降序排序,包含相同数量的省份以省份名称降序拍戏,最终输出第二多以及第三多的省份以及数量,那么下面正确的sql语句是："></a>9.假设有一张表test,表中存放着全国的城市信息以及其所在的省份,现在要以每个省份包含名称以’州’为结尾的城市数量降序排序,包含相同数量的省份以省份名称降序拍戏,最终输出第二多以及第三多的省份以及数量,那么下面正确的sql语句是：</h5><blockquote>
+<p>create table <code>test</code>(</p>
+<p>  <code>id</code> int(11) not null auto_increment,</p>
+<p>  <code>province</code> char(50) not null comment ‘省份名称’,</p>
+<p>  <code>city</code> char(50) not null comment ‘城市名称’,</p>
+<p>  primary key(<code>id</code>),</p>
+<p>  unique key <code>idx</code>(<code>province</code>, <code>city</code>)</p>
+<p>)engine = innodb;</p>
+</blockquote>
+<p>A. select province, count(*) c from test where city like ‘%州’ group by province order by c desc, province desc limit 2,1</p>
+<p>B. select province, count(*) c from test where city like ‘%州’ group by province order by c desc, province desc limit 1,2</p>
+<p>C. select province, count(*) c from test where city like ‘州%’ group by province order by c desc, province desc limit 2,1</p>
+<p>D. select province, count(*) c from test where city like ‘州%’ group by province order by c desc, province desc limit 1,2</p>
+<p>正确答案：B</p>
+<hr>
+<h5 id="10-假设有必修课成绩表course-每位学生的期末考试成绩以及补考成绩都录入到course表中-学号为20190001的同学想查询一下自己未通过的课程的课程编号与课程名称-那么下面正确的sql语句是："><a href="#10-假设有必修课成绩表course-每位学生的期末考试成绩以及补考成绩都录入到course表中-学号为20190001的同学想查询一下自己未通过的课程的课程编号与课程名称-那么下面正确的sql语句是：" class="headerlink" title="10.假设有必修课成绩表course,每位学生的期末考试成绩以及补考成绩都录入到course表中,学号为20190001的同学想查询一下自己未通过的课程的课程编号与课程名称,那么下面正确的sql语句是："></a>10.假设有必修课成绩表course,每位学生的期末考试成绩以及补考成绩都录入到course表中,学号为20190001的同学想查询一下自己未通过的课程的课程编号与课程名称,那么下面正确的sql语句是：</h5><blockquote>
+<p>create table <code>course</code>(</p>
+<p>  <code>id</code> int(11) not null auto_increment,</p>
+<p>  <code>sid</code> int(11) not null comment ‘学号’,</p>
+<p>  <code>cid</code> int(11) not null comment ‘课程编号’,</p>
+<p>  <code>cname</code> char(50) not null comment ‘课程名称’,</p>
+<p>  <code>score</code> int(11) not null comment ‘分数’,</p>
+<p>  primary key(<code>id</code>) </p>
+<p>)engine = innodb;</p>
+</blockquote>
+<p>A. select distinct cid,cname from course where cid not in (select cid from course where score &gt; 60 and sid=20190001)</p>
+<p>B. select distinct cid,cname from course where cid in (select cid from course where score &lt; 60) and sid=20190001</p>
+<p>C. select distinct cid,cname from course where cid not in (select cid from course where score &gt; 60) and sid=20190001</p>
+<p>D. select distinct cid,cname from course where cid in (select cid from course where score &lt; 60 and sid=20190001)</p>
+<hr>
+<h5 id="11-序列-20-23-28-41-61-31-71-76-15-30-构造为完全二叉树，完全二叉树再变为最小堆后，堆所对应的的中序遍历序列可能为"><a href="#11-序列-20-23-28-41-61-31-71-76-15-30-构造为完全二叉树，完全二叉树再变为最小堆后，堆所对应的的中序遍历序列可能为" class="headerlink" title="11.序列{20, 23, 28, 41, 61, 31, 71, 76, 15, 30}构造为完全二叉树，完全二叉树再变为最小堆后，堆所对应的的中序遍历序列可能为"></a>11.序列{20, 23, 28, 41, 61, 31, 71, 76, 15, 30}构造为完全二叉树，完全二叉树再变为最小堆后，堆所对应的的中序遍历序列可能为</h5><p>A. 76, 23, 41, 61, 20, 30, 31, 15, 28, 71</p>
+<p>B. 76, 23, 41, 20, 61, 30, 15, 31, 28, 71</p>
+<p>C. 76, 20, 41, 23, 30, 61, 15, 31, 28, 71</p>
+<p>D. 76, 23, 20, 41, 61, 15, 31, 20, 28, 71</p>
+<p>正确答案：B</p>
+<hr>
+<h5 id="12-有如下递归函数-test-n-，其时间复杂度为多少？"><a href="#12-有如下递归函数-test-n-，其时间复杂度为多少？" class="headerlink" title="12.有如下递归函数 test(n)，其时间复杂度为多少？"></a>12.有如下递归函数 test(n)，其时间复杂度为多少？</h5><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span>  <span class="hljs-title function_">test</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {<br>    <span class="hljs-keyword">if</span> (n &lt;= <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">return</span> (<span class="hljs-number">2</span> *  test(n - <span class="hljs-number">1</span>) + <span class="hljs-number">3</span> *  test(n - <span class="hljs-number">2</span>));<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>A. O(logn)</p>
+<p>B. O(nlogn)</p>
+<p>C. O(n^2)</p>
+<p>D. O(n^3)</p>
+<p>E. O(2^n)</p>
+<p>正确答案：E</p>
+<figure class="highlight cos"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cos">每一层递归调用两次递归，所以是<span class="hljs-number">2</span><span class="hljs-symbol">^n</span><br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h5 id="13-假设磁头当前位于116道，正在向磁道序号增加的方向移动。现有一个磁道访问请求序列为48-59-37-81-125-195-185-205采用电梯调度SCAN算法得到的磁道访问序列是："><a href="#13-假设磁头当前位于116道，正在向磁道序号增加的方向移动。现有一个磁道访问请求序列为48-59-37-81-125-195-185-205采用电梯调度SCAN算法得到的磁道访问序列是：" class="headerlink" title="13.假设磁头当前位于116道，正在向磁道序号增加的方向移动。现有一个磁道访问请求序列为48, 59, 37, 81, 125, 195, 185, 205采用电梯调度SCAN算法得到的磁道访问序列是："></a>13.假设磁头当前位于116道，正在向磁道序号增加的方向移动。现有一个磁道访问请求序列为48, 59, 37, 81, 125, 195, 185, 205采用电梯调度SCAN算法得到的磁道访问序列是：</h5><p>A. 125, 185, 195, 205, 81, 59, 48, 37</p>
+<p>B. 125, 185, 195, 205, 37, 48, 59, 81</p>
+<p>C. 37, 48, 59, 81, 125, 185, 195, 205</p>
+<p>D. 125, 195, 185, 205, 48, 59, 37, 81</p>
+<p>正确答案：A</p>
+<hr>
+<ol start="14">
+<li></li>
+</ol>
+<p>属于同一进程的两个线程 T1和 T2并发执行，共享初值为 0 的全局变量 X。T1和 T2实现对全局变量 x 加 1 的伪代码分别如下:</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java">T1：<br><br>temp1=X;<br><br>temp1=temp1+<span class="hljs-number">1</span>;<br><br>X=temp1;<br><br>T2：<br><br>temp2=X;<br><br>temp2=temp2+<span class="hljs-number">1</span>;<br><br>X=temp2;<br></code></pre></td></tr></tbody></table></figure>
+
+<p>2个线程进行到任意一步都能被对方打断，执行另外一个线程的代码，请问在所有可能的执行序列中，使 x 的值为 2 的序列个数有几种？</p>
+<p>A. 1</p>
+<p>B. 2</p>
+<p>C. 3</p>
+<p>D. 4</p>
+<p>正确答案：B</p>
+<figure class="highlight mipsasm"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-built_in">T1</span>优先，<span class="hljs-built_in">T2</span>优先<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<hr>
+<h5 id="15-shell脚本中，需求如下：如果-ls-x2F-tmp-执行成功输出True，否则输出Fail，下列哪项正确"><a href="#15-shell脚本中，需求如下：如果-ls-x2F-tmp-执行成功输出True，否则输出Fail，下列哪项正确" class="headerlink" title="15.shell脚本中，需求如下：如果 ls /tmp 执行成功输出True，否则输出Fail，下列哪项正确"></a>15.shell脚本中，需求如下：如果 ls /tmp 执行成功输出True，否则输出Fail，下列哪项正确</h5><p>A. ls /tmp; [[ $# -eq 0 ]] &amp;&amp; echo True || echo Fail</p>
+<p>B. ls /tmp; [[ $* -eq 0 ]] &amp;&amp; echo True || echo Fail</p>
+<p>C. ls /tmp; [[ $0 -eq 0 ]] &amp;&amp; echo True || echo Fail</p>
+<p>D. ls /tmp; [[ $? -eq 0 ]] &amp;&amp; echo True || echo Fail</p>
+<p>正确答案：D</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs powershell">选项 A 中的<span class="hljs-variable">$</span><span class="hljs-comment">#表示命令行参数个数，而不是上一条命令执行结果的状态码。</span><br>选项 B 中的<span class="hljs-variable">$</span>*表示所有命令行参数的字符串，而不是上一条命令执行结果的状态码。<br>选项 C 中的<span class="hljs-variable">$0</span>表示脚本名字，而不是上一条命令执行结果的状态码。<br>选项 D 中的<span class="hljs-variable">$</span>?表示上一条命令执行的状态码，如果状态码为 <span class="hljs-number">0</span>，表示命令执行成功，否则表示执行失败。<br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h5 id="16-nginx-log是一个日志文件，现在想将日志的最新输出实时打印在屏幕上，用哪个命令可以实现："><a href="#16-nginx-log是一个日志文件，现在想将日志的最新输出实时打印在屏幕上，用哪个命令可以实现：" class="headerlink" title="16.nginx.log是一个日志文件，现在想将日志的最新输出实时打印在屏幕上，用哪个命令可以实现："></a>16.nginx.log是一个日志文件，现在想将日志的最新输出实时打印在屏幕上，用哪个命令可以实现：</h5><p>A. cat -f nginx.log</p>
+<p>B. tee -f nginx.log</p>
+<p>C. head -f nginx.log</p>
+<p>D. tail -f nginx.log</p>
+<p>正确答案：D</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">linux命令中<span class="hljs-built_in">cat</span>、more、less、<span class="hljs-built_in">tail</span>、<span class="hljs-built_in">head</span>均可用来查看文件内容，主要区别有：<br><br><span class="hljs-built_in">cat</span>是一次性显示整个文件的内容，适用于文件内容少的情况；<br>more和less一般用于显示文件内容超过一屏的内容，并且提供翻页的功能。<br><span class="hljs-built_in">tail</span> 和 <span class="hljs-built_in">head</span>分别显示文件的后几行和前几行内容。常用于大文件的截取。<br><br><span class="hljs-built_in">tail</span> 用来显示文件的最后几行内容，当文件内容有更新时，<span class="hljs-built_in">tail</span>会自己主动刷新，确保一直显示最新的文件内容。<br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h5 id="17-由于前端直接可被用户访问，攻击者可以轻易得到页面和通讯过程中的相关信息，进而进行恶意的攻击，关于其攻击的方式描述正确的有哪些？"><a href="#17-由于前端直接可被用户访问，攻击者可以轻易得到页面和通讯过程中的相关信息，进而进行恶意的攻击，关于其攻击的方式描述正确的有哪些？" class="headerlink" title="17.由于前端直接可被用户访问，攻击者可以轻易得到页面和通讯过程中的相关信息，进而进行恶意的攻击，关于其攻击的方式描述正确的有哪些？"></a>17.由于前端直接可被用户访问，攻击者可以轻易得到页面和通讯过程中的相关信息，进而进行恶意的攻击，关于其攻击的方式描述正确的有哪些？</h5><p>A. 假定站点 foo.com 的服务器架设在公司内网，提供了任意站点截图服务 foo.com/screenshot?url=xxx，恶意修改 url 中的值为内网地址，构成 SSRF 攻击，进而造成数据泄露的风险</p>
+<p>B. 网站 foo.com 提供 POST 方法的 /tansfer/to/xxx 的转账服务，由于未做 CSRF 的防范，被攻击者重复伪造该请求，形成重放攻击，造成经济损失</p>
+<p>C. 网站 foo.com 使用了非安全的 HTTP 协议，其中转账服务 POST /transfer/to/xxx，转账金额 money 在 payload 上，假定接口层面采用了随机 token 来防范 csrf 攻击，接口参数未做签名校验，此时攻击者通过篡改 money 的数值，构成中间人攻击</p>
+<p>D. 借助社会工程学的理论基础，基于用户的贪婪等心理，制作一个 qq.com 的”冒牌”中奖页面，诱导用户输入账号密码进行登录，造成隐私的泄露，属于”钓鱼”的网络欺诈行为</p>
+<p>正确答案：ABCD</p>
+<hr>
+<h5 id="18-假设一个数组采用快速排序，则下面的选项中，不可能是第3趟排序结果的是"><a href="#18-假设一个数组采用快速排序，则下面的选项中，不可能是第3趟排序结果的是" class="headerlink" title="18.假设一个数组采用快速排序，则下面的选项中，不可能是第3趟排序结果的是"></a>18.假设一个数组采用快速排序，则下面的选项中，不可能是第3趟排序结果的是</h5><p>A. 4, 8, 6, 10, 12, 16, 14</p>
+<p>B. 10, 4, 6, 8, 12, 14, 16</p>
+<p>C. 8, 4, 6, 12, 10, 14, 16</p>
+<p>D. 4, 8, 6, 12, 10, 16, 14</p>
+<p>正确答案：ACD</p>
+<figure class="highlight armasm"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs armasm">快速排序一趟确定<span class="hljs-number">1</span>个或者<span class="hljs-number">2</span>个点的最终位置，如果是第一次，确定<span class="hljs-number">1</span>个。<br>第二次以后，如果基点在最左边或者最右边确定<span class="hljs-number">1</span>个点最终位置。<br>如果在中间，那么确定<span class="hljs-number">2</span>个点的最终位置，所以ACD全错<br>只有<span class="hljs-keyword">B</span> 选项，<span class="hljs-number">3</span>个点依次都是在最左边，快速排序可能退化成冒泡排序，是正确的<br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h5 id="19-某进程创建的若干个线程，这些线程不能共享的是"><a href="#19-某进程创建的若干个线程，这些线程不能共享的是" class="headerlink" title="19.某进程创建的若干个线程，这些线程不能共享的是"></a>19.某进程创建的若干个线程，这些线程不能共享的是</h5><p>A. 程序计数器</p>
+<p>B. 某线程的栈指针</p>
+<p>C. 进程打开的文件</p>
+<p>D. 全局变量</p>
+<p>E. 进程的堆空间</p>
+<p>正确答案：AB</p>
+<hr>
+<h5 id="20-tcp发送报文数据时，可能将多个数据包合并成一个大的数据包发送，就有可能发生粘包问题。以下可以用来解决这个问题的是？"><a href="#20-tcp发送报文数据时，可能将多个数据包合并成一个大的数据包发送，就有可能发生粘包问题。以下可以用来解决这个问题的是？" class="headerlink" title="20.tcp发送报文数据时，可能将多个数据包合并成一个大的数据包发送，就有可能发生粘包问题。以下可以用来解决这个问题的是？"></a>20.tcp发送报文数据时，可能将多个数据包合并成一个大的数据包发送，就有可能发生粘包问题。以下可以用来解决这个问题的是？</h5><p>A. 发送固定长度的消息</p>
+<p>B. 包结尾增加分隔符</p>
+<p>C. 慢开始算法</p>
+<p>D. 把消息分成消息头和消息体，其中消息头上包含长度</p>
+<p>E. 利用滑动窗口实现控制</p>
+<p>正确答案：ABD</p>
+<hr>
+<h5 id="21-最小公倍数与最大公约数"><a href="#21-最小公倍数与最大公约数" class="headerlink" title="21.最小公倍数与最大公约数"></a>21.最小公倍数与最大公约数</h5><p>度度熊请你找出两个数<em>a</em>,<em>b</em>，满足1≤<em>a</em>,<em>b</em>≤<em>n</em>且<em>l<strong>c</strong>m</em>(<em>a</em>,<em>b</em>)−<em>g<strong>c</strong>d</em>(<em>a</em>,<em>b</em>)尽量大。输出最大的l<strong>c</strong>m*(<em>a</em>,<em>b</em>)−<em>g<strong>c</strong>d</em>(<em>a</em>,<em>b</em>).<br>其中l<strong>c</strong>m*(<em>a</em>,<em>b</em>)表示<em>a</em>和<em>b</em>的最小公倍数，g<strong>c</strong>d*(<em>a</em>,<em>b</em>)表示a<em>和</em>b*的最大公约数。</p>
+<p>示例1</p>
+<p>输入</p>
+<figure class="highlight"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">5<br></code></pre></td></tr></tbody></table></figure>
+
+<p>输出</p>
+<figure class="highlight"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">19<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<p>示例2</p>
+<p>输入</p>
+<figure class="highlight"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">3<br></code></pre></td></tr></tbody></table></figure>
+
+<p>输出</p>
+<figure class="highlight"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">5<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<p>正确答案：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> java.util.*;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Main</span> {<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> {<br>        <span class="hljs-type">Scanner</span> <span class="hljs-variable">sc</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Scanner</span>(System.in);<br>        <span class="hljs-type">Long</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> sc.nextLong();<br>        System.out.println(a*(a-<span class="hljs-number">1</span>)-<span class="hljs-number">1</span>);<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h5 id="22-还原数列"><a href="#22-还原数列" class="headerlink" title="22.还原数列"></a>22.还原数列</h5><p>老板给度度熊n<em>个数， 每一次从a</em>[<em>i</em>]中取出一个最大的减去<em>n</em>， 其他的n<em>−1个数加上1， 一直重复直到最大的a</em>[<em>i</em>]&lt;<em>n</em>， 执行次数记为<em>k</em>。<br>老板想知道最少执行多少次操作使得n<em>个数都小于n</em>呢？</p>
+<p>示例1</p>
+<p>输入</p>
+<figure class="highlight basic"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-number">3</span><br><span class="hljs-symbol">1 </span><span class="hljs-number">0</span> <span class="hljs-number">3</span><br></code></pre></td></tr></tbody></table></figure>
+
+<p>输出</p>
+<figure class="highlight"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">1<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<p>正确答案：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> java.util.*;<br>  <br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Main</span>{<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span>{<br>        <span class="hljs-type">Scanner</span> <span class="hljs-variable">sc</span> <span class="hljs-operator">=</span><span class="hljs-keyword">new</span> <span class="hljs-title class_">Scanner</span>(System.in);<br>        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span>sc.nextInt();<br>        <span class="hljs-type">long</span> [] arr =<span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span> [n];<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span><span class="hljs-number">0</span>;i&lt;n;i++){<br>            arr[i]=sc.nextLong();<br>        }<br>        <span class="hljs-type">long</span> count=<span class="hljs-number">0</span>;<br>        <span class="hljs-type">int</span> len=arr.length;<br>        <span class="hljs-keyword">while</span>(!isVaild(arr)){<br>            <span class="hljs-type">long</span> max=<span class="hljs-number">0</span>;<br>            <span class="hljs-type">int</span> index=<span class="hljs-number">0</span>;<br>            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span><span class="hljs-number">0</span>;i&lt;arr.length;i++){<br>                <span class="hljs-keyword">if</span>(arr[i]&gt;max){<br>                    max=arr[i];<br>                    index=i;<br>                }<br>            }<br>            count+=max/n;<br>            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;n;i++){<br>                arr[i]+=max/n;<br>            }<br>            arr[index]=max%n;<br>        }<br>        System.out.println(count);<br>    }<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isVaild</span><span class="hljs-params">(<span class="hljs-type">long</span> [] arr)</span>{<br>        <span class="hljs-type">boolean</span> <span class="hljs-variable">falg</span> <span class="hljs-operator">=</span><span class="hljs-literal">true</span>;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">long</span> i:arr){<br>            <span class="hljs-keyword">if</span>(i&gt;=arr.length) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>        }<br>        <span class="hljs-keyword">return</span> falg;<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h5 id="23-树上上升序列"><a href="#23-树上上升序列" class="headerlink" title="23.树上上升序列"></a>23.树上上升序列</h5><p>度度熊给定一棵树，树上的第u<em>个节点有点权a**u</em>。请你找出一条最长的路径(<em>u</em>,<em>v</em>)，使得从u<em>沿着唯一路径走到v</em>的途中，点权不断严格递增。<br>换句话说，设路径为(<em>u</em>,<em>p</em>1​,<em>p</em>2​,…,<em>p**m</em>​,<em>v</em>)，则需要满足a<strong>u*​&lt;<em>a**p</em>1​​&lt;*a</strong>p*2​​⋯&lt;<em>a<strong>p</strong>m</em>​​&lt;<em>a**v</em>​。输出最长满足条件的路径的长度。</p>
+<p>示例1</p>
+<p>输入</p>
+<figure class="highlight basic"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-number">5</span><br><span class="hljs-symbol">3 </span><span class="hljs-number">5</span> <span class="hljs-number">5</span> <span class="hljs-number">4</span> <span class="hljs-number">1</span><br><span class="hljs-symbol">1 </span><span class="hljs-number">2</span><br><span class="hljs-symbol">1 </span><span class="hljs-number">3</span><br><span class="hljs-symbol">2 </span><span class="hljs-number">4</span><br><span class="hljs-symbol">2 </span><span class="hljs-number">5</span><br></code></pre></td></tr></tbody></table></figure>
+
+<p>输出</p>
+<figure class="highlight"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">2<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<p>示例2</p>
+<p>输入</p>
+<figure class="highlight basic"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-number">4</span><br><span class="hljs-symbol">3 </span><span class="hljs-number">4</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span><br><span class="hljs-symbol">1 </span><span class="hljs-number">2</span><br><span class="hljs-symbol">2 </span><span class="hljs-number">3</span><br><span class="hljs-symbol">2 </span><span class="hljs-number">4</span><br></code></pre></td></tr></tbody></table></figure>
+
+<p>输出</p>
+<figure class="highlight"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">2<br></code></pre></td></tr></tbody></table></figure>
+
+
+
+<p>正确答案：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//邻接表</span><br><span class="hljs-keyword">import</span> java.util.*;<br> <br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Main</span> {<br>    <span class="hljs-keyword">static</span> List&lt;List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>    <span class="hljs-keyword">static</span> <span class="hljs-type">int</span> <span class="hljs-variable">max</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br> <br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> {<br>        <span class="hljs-type">Scanner</span> <span class="hljs-variable">sc</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Scanner</span>(System.in);<br>        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> sc.nextInt();<br>        <span class="hljs-type">int</span>[] num = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {<br>            num[i] = sc.nextInt();<br>        }<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; num.length; i++) {<br>            graph.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());<br>        }<br>        <span class="hljs-comment">// 构建图,邻接矩阵</span><br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n - <span class="hljs-number">1</span>; i++) {<br>            <span class="hljs-type">int</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> sc.nextInt() - <span class="hljs-number">1</span>;<br>            <span class="hljs-type">int</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> sc.nextInt() - <span class="hljs-number">1</span>;<br>            graph.get(a).add(b);<br>            graph.get(b).add(a);<br>        }<br> <br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; num.length - <span class="hljs-number">1</span>; i++) {<br>            dfs(num, i, <span class="hljs-number">1</span>);<br>        }<br>        System.out.println(max);<br> <br>    }<br> <br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span>[] num, <span class="hljs-type">int</span> start, <span class="hljs-type">int</span> wayNum)</span> {<br>        max = Math.max(max, wayNum);<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i : graph.get(start)) {<br>            <span class="hljs-keyword">if</span> (num[i] &gt; num[start]) {<br>                dfs(num, i, wayNum + <span class="hljs-number">1</span>);<br>            }<br>        }<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AC%94%E8%AF%95/" class="category-chain-item">笔试</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">#排序算法</a>
+      
+        <a href="/tags/%E5%B9%B6%E5%8F%91/">#并发</a>
+      
+        <a href="/tags/JVM/">#JVM</a>
+      
+        <a href="/tags/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/">#二分查找</a>
+      
+        <a href="/tags/AOP/">#AOP</a>
+      
+        <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">#分布式锁</a>
+      
+        <a href="/tags/%E5%93%88%E5%A4%AB%E6%9B%BC%E7%BC%96%E7%A0%81/">#哈夫曼编码</a>
+      
+        <a href="/tags/Linux/">#Linux</a>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">#计算机网络</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/03/29/%E7%AE%97%E6%B3%95/%E5%93%88%E5%A4%AB%E6%9B%BC%E7%BC%96%E7%A0%81/" title="哈夫曼编码">
+                        <span class="hidden-mobile">哈夫曼编码</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a><span>晴天</span></a> <i class="iconfont icon-love"></i> <a><span>晚风</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
